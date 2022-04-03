@@ -79,9 +79,13 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-8">
-                        <div class="card text-white" style="background-color: #282a36">
+                        @if(request()->segment(1))
+                            <div class="card text-white" style="background-color: #282a36">
+                                @yield('content')
+                            </div>
+                        @else
                             @yield('content')
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
