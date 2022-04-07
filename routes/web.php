@@ -16,7 +16,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome',[
-        'posts' => Post::latest()->paginate(5)
+        'posts' => Post::latest()->paginate(10)
+    ]);
+});
+
+Route::get('post/{post:slug}', function (Post $post) {
+    return view('post',[
+        'post' => $post
     ]);
 });
 

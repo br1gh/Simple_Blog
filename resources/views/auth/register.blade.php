@@ -8,12 +8,26 @@
             @csrf
 
             <div class="row mb-3">
-                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+                <label for="username" class="col-md-4 col-form-label text-md-end">{{ __('Username') }}</label>
 
                 <div class="col-md-6">
-                    <input id="name" type="text" class="form-control text-white @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                    <input id="username" type="text" class="form-control text-white @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
 
-                    @error('name')
+                    @error('username')
+                    <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label for="full_name" class="col-md-4 col-form-label text-md-end">{{ __('Full Name') }}</label>
+
+                <div class="col-md-6">
+                    <input id="full_name" type="text" class="form-control text-white @error('full_name') is-invalid @enderror" name="full_name" value="{{ old('full_name') }}" required autocomplete="full_name" autofocus>
+
+                    @error('full_name')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>

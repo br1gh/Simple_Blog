@@ -16,7 +16,7 @@ class CommentFactory extends Factory
     public function definition()
     {
         return [
-            'body' => $this->faker->paragraph(),
+            'body' => '<p>' . implode('</p><p>', $this->faker->paragraphs(3)) . '</p>',
             'score' => rand(1, 5),
             'user_id' => User::factory(),
             'post_id' => Post::factory()
