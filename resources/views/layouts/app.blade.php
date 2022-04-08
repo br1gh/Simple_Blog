@@ -54,7 +54,7 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                    {{ Auth::user()->full_name }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end bg-primary" aria-labelledby="navbarDropdown">
@@ -75,17 +75,11 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="pb-4">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-8">
-                        @if(request()->segment(1))
-                            <div class="card text-white" style="background-color: #282a36">
-                                @yield('content')
-                            </div>
-                        @else
-                            @yield('content')
-                        @endif
+                        @yield('content')
                     </div>
                 </div>
             </div>

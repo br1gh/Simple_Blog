@@ -9,6 +9,8 @@ class Comment extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['user_id', 'post_id', 'score', 'body'];
+
     public function post()
     {
         return $this->belongsTo(Post::class);

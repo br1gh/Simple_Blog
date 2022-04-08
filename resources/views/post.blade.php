@@ -2,7 +2,10 @@
 
 @section('content')
     @include('post-card', ['content' => $post->body, 'button' => '<- Go back', 'button_action' => "/"])
-    @foreach($post->comments as $comment)
+    @auth
+        @include('add-comment-form')
+    @endauth
+    @foreach($post->comments->reverse() as $comment)
         @include('comment-card')
     @endforeach
 @endsection

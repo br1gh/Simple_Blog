@@ -1,5 +1,9 @@
 @if ($paginator->hasPages())
     <style>
+        ul {
+            margin-bottom: 0;
+        }
+
         .page-link {
             background-color: #282a36;
             border: 1px solid rgba(0, 0, 0, 0.125);

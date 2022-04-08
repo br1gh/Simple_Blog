@@ -2,6 +2,8 @@
 
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,17 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome',[
-        'posts' => Post::latest()->paginate(10)
-    ]);
-});
+Route::get('/', [PostController::class,'show']);
+Route::post('/', [PostController::class,'store']);
 
-Route::get('post/{post:slug}', function (Post $post) {
-    return view('post',[
-        'post' => $post
-    ]);
-});
+Route::get('post/{post:slug}', [CommentController::class, 'show']);
+Route::post('post/{post:slug}', [CommentController::class,'store']);
 
 Auth::routes(['verify' => true]);
 
