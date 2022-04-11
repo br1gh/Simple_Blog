@@ -1,6 +1,19 @@
 <div class="card text-white mt-4">
-    <div class="card-header mt-9">
-        <h1 class="mb-0">{{$post->title}}</h1>
+    <div class="card-header mt-6">
+
+        <div class="row pt-2">
+            <h1 class="col-10">{{$post->title}}</h1>
+            @auth
+                @if(Auth::user()->id == $post->user->id)
+                    <a href="/post/{{$post->slug}}/edit" class="col-1 p-0 text-center">
+                        <i class="bi bi-pencil-square text-info h1"></i>
+                    </a>
+                    <a href="/post/{{$post->slug}}/delete" class="col-1 p-0 text-center">
+                        <i class="bi bi-trash text-danger h1"></i>
+                    </a>
+                @endif
+            @endauth
+        </div>
     </div>
 
     <div class="card-body">
