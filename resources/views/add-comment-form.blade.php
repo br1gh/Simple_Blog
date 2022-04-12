@@ -26,9 +26,10 @@
                 <label for="score" class="col-md-2 col-form-label text-md-end">Score</label>
 
                 <div class="col-md-8">
-                            <input id="score" type="number" min="1" max="5" value="{{ old('score') }}" class="form-control text-white @error('score') is-invalid @enderror"
-                                      name="score" required
-                                      autocomplete="score">
+                    <input id="score" type="number" min="1" max="5" value="{{ old('score') }}"
+                           class="form-control text-white @error('score') is-invalid @enderror"
+                           name="score" required
+                           autocomplete="score">
 
                     @error('score')
                     <span class="invalid-feedback" role="alert">
@@ -40,7 +41,7 @@
 
             <div class="row mb-0">
                 <div class="col-md-8 offset-md-2">
-                    <button type="submit" class="btn btn-primary w-100">
+                    <button type="submit" class="btn btn-success w-100">
                         Add comment
                     </button>
                 </div>

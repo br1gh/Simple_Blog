@@ -42,7 +42,8 @@
                 <label for="excerpt" class="col-md-2 col-form-label text-md-end">Excerpt</label>
 
                 <div class="col-md-8">
-                            <textarea id="excerpt" class="form-control text-white @error('excerpt') is-invalid @enderror"
+                            <textarea id="excerpt"
+                                      class="form-control text-white @error('excerpt') is-invalid @enderror"
                                       name="excerpt" required
                                       autocomplete="excerpt">{{ old('excerpt') }}</textarea>
 
@@ -59,7 +60,7 @@
 
                 <div class="col-md-8">
                             <textarea id="body" class="form-control text-white @error('body') is-invalid @enderror"
-                                      name="body" required autocomplete="body">{{ old('excerpt') }}</textarea>
+                                      name="body" required autocomplete="body">{{ old('body') }}</textarea>
 
                     @error('body')
                     <span class="invalid-feedback" role="alert">

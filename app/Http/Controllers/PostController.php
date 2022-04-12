@@ -36,42 +36,39 @@ class PostController extends Controller
         return redirect('/');
     }
 
-    public function edit($slug)
+    public function edit(Post $post)
     {
-        $post = Post::where('slug',$slug)->get()[0];
-
-        if (Auth::check() and Auth::user()->id == $post->user->id)
-        {
+        if (Auth::user()->id == $post->user->id) {
             return view('edit-post', [
                 'post' => $post
             ]);
-        }
-        else
+        } else
             abort(403);
     }
 
-    public function update($slug)
-        {
-            \request()->validate([
-                'title' => ['required', 'string', 'min:4', 'max:255'],
-                'excerpt' => ['required', 'string', 'min:4', 'max:255'],
-                'body' => ['required', 'string', 'min:32'],
-            ]);
-
-            Post::where('slug',$slug)
-                ->update([
-                'title' => \request()->title,
-                'excerpt' => \request()->excerpt,
-                'body' => \request()->body
-            ]);
-
-            return redirect('/');
-        }
-
-    public function destroy($slug)
+    public function update(Post $post)
     {
-        Post::where('slug', $slug)->delete();
+        \request()->validate([
+            'title' => ['required', 'string', 'min:4', 'max:255'],
+            'excerpt' => ['required', 'string', 'min:4', 'max:255'],
+            'body' => ['required', 'string', 'min:32'],
+        ]);
+
+        $post->update([
+            'title' => \request()->title,
+            'excerpt' => \request()->excerpt,
+            'body' => \request()->body
+        ]);
 
         return redirect('/');
+    }
+
+    public function destroy(Post $post)
+    {
+        if (Auth::user()->id == $post->user->id) {
+            $post->delete();
+            return redirect('/');
+        } else
+            abort(403);
     }
 }

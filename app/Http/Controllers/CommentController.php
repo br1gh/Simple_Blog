@@ -32,4 +32,42 @@ class CommentController extends Controller
 
         return redirect("/post/{$post->slug}");
     }
+
+    public function edit($slug, Comment $comment)
+    {
+        if (Auth::user()->id == $comment->user->id) {
+            return view('edit-comment', [
+                'comment' => $comment,
+                'slug' => $slug
+            ]);
+        } else
+            abort(403);
+    }
+
+    public function update($slug, $id)
+    {
+        \request()->validate([
+            'score' => ['required', 'integer', 'min:1', 'max:5'],
+            'body' => ['required', 'string'],
+        ]);
+
+        $comment = Comment::find($id);
+
+        $comment->update([
+            'score' => \request()->score,
+            'body' => \request()->body
+        ]);
+
+        return redirect("/post/$slug");
+    }
+
+    public function destroy($slug, $id)
+    {
+        $comment = Comment::find($id);
+        if (Auth::user()->id == $comment->user->id) {
+            $comment->delete();
+            return redirect("/post/$slug");
+        } else
+            abort(403);
+    }
 }

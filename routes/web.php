@@ -16,16 +16,21 @@ use App\Http\Controllers\CommentController;
 |
 */
 
-Route::get('/', [PostController::class,'show'])->name('posts');
-Route::post('/', [PostController::class,'store']);
+Route::get('/', [PostController::class, 'show'])->name('posts');
+Route::post('/', [PostController::class, 'store']);
 
 Route::get('post/{post:slug}', [CommentController::class, 'show']);
-Route::post('post/{post:slug}', [CommentController::class,'store']);
+Route::post('post/{post:slug}', [CommentController::class, 'store']);
 
-Route::get('post/{post:slug}/edit', [PostController::class, 'edit']);
-Route::post('post/{post:slug}/edit', [PostController::class, 'update']);
+Route::get('post/{post:slug}/edit', [PostController::class, 'edit'])->middleware('auth');
+Route::post('post/{post:slug}/edit', [PostController::class, 'update'])->middleware('auth');
 
-Route::get('post/{post:slug}/delete', [PostController::class, 'destroy']);
+Route::get('post/{post:slug}/delete', [PostController::class, 'destroy'])->middleware('auth');
+
+Route::get('post/{post:slug}/comment/{comment:id}/edit', [CommentController::class, 'edit'])->middleware('auth');
+Route::post('post/{post:slug}/comment/{comment:id}/edit', [CommentController::class, 'update'])->middleware('auth');
+
+Route::get('post/{post:slug}/comment/{comment:id}/delete', [CommentController::class, 'destroy'])->middleware('auth');
 
 Auth::routes(['verify' => true]);
 
