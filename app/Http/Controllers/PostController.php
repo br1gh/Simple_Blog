@@ -74,10 +74,10 @@ class PostController extends Controller
             $path = "/photos/$post->id/post_image/$post->post_image";
             if (Storage::disk('public')->exists($path)) {
                 Storage::disk('public')->delete($path);
-                Storage::putFileAs(
-                    "public/photos/$post->id/post_image", $post_image, $post_image_name
-                );
             }
+            Storage::putFileAs(
+                "public/photos/$post->id/post_image", $post_image, $post_image_name
+            );
         } else
             $post_image_name = $post->post_image;
 
