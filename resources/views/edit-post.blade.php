@@ -56,6 +56,23 @@
                     </div>
                 </div>
 
+                <div class="row mb-3">
+                    <label for="post_image" class="col-md-2 col-form-label text-md-end">Post Image</label>
+
+                    <div class="col-md-8">
+                        <input id="post_image" type="file"
+                               class="form-control text-white @error('post_image') is-invalid @enderror"
+                               name="post_image"
+                               autocomplete="post_image" autofocus>
+
+                        @error('post_image')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                </div>
+
                 <div class="row mb-0">
                     <div class="col-md-8 offset-md-2">
                         <button type="submit" class="btn btn-info w-100">

@@ -17,16 +17,32 @@
     </div>
 
     <div class="card-body">
-        <div class="row mb-3">
-            <h5>{{$post->created_at->diffForHumans()}}</h5>
+        <div class="row">
+            @php
+                $path = "/photos/$post->id/post_image/$post->post_image";
+                if (Storage::disk('public')->exists($path))
+                    echo "<div class='col-md-6 mb-3'><img src='/storage/$path' class='rounded img-fluid w-100' style='max-height: 300px'></div>";
+            @endphp
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <h5>created {{$post->created_at->diffForHumans()}}</h5>
+                </div>
+
+                @if($post->created_at != $post->updated_at)
+                    <div class="mb-3">
+                        <h5 class="text-muted">updated {{$post->updated_at->diffForHumans()}}</h5>
+                    </div>
+                @endif
+
+                <div class="mb-3">
+                    <h4>by <a href="/?user={{$post->user->username}}"
+                              class="text-primary">{{$post->user->full_name}}</a></h4>
+                </div>
+            </div>
         </div>
 
-        <div class="row mb-3">
-            <h4>by <a href="/?user={{$post->user->username}}" class="text-primary">{{$post->user->full_name}}</a></h4>
-        </div>
-
-        <div class="row mb-3">
-            {!!$content!!}
+        <div class="row">
+            <p>{!!$content!!}</p>
         </div>
 
         <a href="{{$button_action}}">
