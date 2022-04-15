@@ -2,7 +2,9 @@
 
 @section('content')
     @auth
-        @include('add-post-form')
+        @if(Auth::user()->hasVerifiedEmail())
+            @include('add-post-form')
+        @endif
     @endauth
 
     <div class="mt-4">{{$posts->links()}}</div>

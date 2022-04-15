@@ -29,8 +29,11 @@ class PostController extends Controller
             'gallery.*' => ['image']
         ]);
 
-        $post_image = \request()->file('post_image');
-        $post_image_name = $post_image->getClientOriginalName();
+        if (\request()->post_image) {
+            $post_image = \request()->file('post_image');
+            $post_image_name = $post_image->getClientOriginalName();
+        } else
+            $post_image_name = 'post_image.jpg';
 
         $post_id = Post::create([
             'user_id' => Auth::user()->id,
@@ -41,9 +44,11 @@ class PostController extends Controller
             'post_image' => $post_image_name
         ])->id;
 
-        $path = Storage::putFileAs(
-            "public/photos/$post_id/post_image", $post_image, $post_image_name
-        );
+        if (\request()->post_image) {
+            Storage::putFileAs(
+                "public/photos/$post_id/post_image", $post_image, $post_image_name
+            );
+        }
 
         return redirect('/');
     }
@@ -71,7 +76,7 @@ class PostController extends Controller
             $post_image = \request()->file('post_image');
             $post_image_name = $post_image->getClientOriginalName();
 
-            $path = "/photos/$post->id/post_image/$post->post_image";
+            $path = "photos/$post->id/post_image/$post->post_image";
             if (Storage::disk('public')->exists($path)) {
                 Storage::disk('public')->delete($path);
             }
@@ -95,6 +100,7 @@ class PostController extends Controller
     {
         if (Auth::user()->id == $post->user->id) {
             $post->delete();
+            Storage::disk('public')->deleteDirectory(("photos/$post->id"));
             return redirect('/');
         } else
             abort(403);

@@ -25,7 +25,7 @@
         </div>
 
         <div class="row mb-3">
-            {!!$comment->body!!}
+            <p>{!!$comment->body!!}</p>
         </div>
     </div>
 </div>
