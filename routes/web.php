@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
@@ -18,6 +19,8 @@ use App\Http\Controllers\CommentController;
 
 Route::get('/', [PostController::class, 'show'])->name('posts');
 Route::post('/', [PostController::class, 'store']);
+
+Route::get('user/{user:username}', [UserController::class, 'show']);
 
 Route::get('post/{post:slug}', [CommentController::class, 'show']);
 Route::post('post/{post:slug}', [CommentController::class, 'store']);

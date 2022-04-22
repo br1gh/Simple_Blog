@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="card text-white mt-4">
+    <div class="card text-white border-info mt-4">
 
         <div class="card-header">Edit post</div>
 

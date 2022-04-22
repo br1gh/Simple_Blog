@@ -1,4 +1,4 @@
-<div class="card text-white mt-4">
+<div class="card text-white border-primary mt-4">
     <div class="card-header mt-6">
 
         <div class="row pt-2">
@@ -35,7 +35,7 @@
                 @endif
 
                 <div class="mb-3">
-                    <h4>by <a href="/?user={{$post->user->username}}"
+                    <h4>by <a href="/user/{{$post->user->username}}"
                               class="text-primary">{{$post->user->full_name}}</a></h4>
                 </div>
             </div>

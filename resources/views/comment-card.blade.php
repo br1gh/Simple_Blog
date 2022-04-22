@@ -1,8 +1,8 @@
-<div class="card text-white mt-4">
-    <div class="card-body">
+<div class="card text-white border-success mt-4 p-0">
+    <div class="card-header">
         <div class="row pt-2 mb-3">
             <h4 class="col-10">
-                <a href="/?user={{$comment->user->username}}" class="text-success">{{$comment->user->full_name}}</a>
+                <a href="/user/{{$comment->user->username}}/" class="text-success">{{$comment->user->full_name}}</a>
             </h4>
             @auth
                 @if(Auth::user()->id == $comment->user->id)
