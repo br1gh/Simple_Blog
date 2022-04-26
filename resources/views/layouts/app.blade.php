@@ -59,6 +59,10 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end bg-warning" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item text-black bg-warning" href="/user/{{Auth::user()->username}}">
+                                        Profile
+                                    </a>
+
                                     <a class="dropdown-item text-black bg-warning" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

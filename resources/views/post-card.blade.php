@@ -21,7 +21,7 @@
             @php
                 $path = "/photos/$post->id/post_image/$post->post_image";
                 if (Storage::disk('public')->exists($path))
-                    echo "<div class='col-md-6 mb-3'><img src='/storage/$path' class='rounded img-fluid w-100' style='max-height: 300px'></div>";
+                    echo "<div class='col-md-6 mb-3'><img src='/storage/$path' class='rounded img-fluid w-100' style='max-height: 300px; object-fit: cover;'></div>";
             @endphp
             <div class="col-md-6">
                 <div class="mb-3">
