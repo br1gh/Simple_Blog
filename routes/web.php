@@ -22,8 +22,11 @@ Route::post('/', [PostController::class, 'store']);
 
 Route::get('user/{user:username}', [UserController::class, 'show']);
 
-Route::get('user/{user:username}/edit-details', [UserController::class, 'edit_details'])->middleware('auth');
-Route::post('user/{user:username}/edit-details', [UserController::class, 'update_details'])->middleware('auth');
+Route::get('edit-details', [UserController::class, 'edit_details'])->middleware('auth');
+Route::post('edit-details', [UserController::class, 'update_details'])->middleware('auth');
+
+Route::get('edit-email', [UserController::class, 'edit_email'])->middleware('auth');
+Route::post('edit-email', [UserController::class, 'update_email'])->middleware('auth');
 
 Route::get('post/{post:slug}', [CommentController::class, 'show']);
 Route::post('post/{post:slug}', [CommentController::class, 'store']);

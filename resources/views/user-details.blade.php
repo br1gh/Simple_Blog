@@ -60,11 +60,41 @@
 
         @auth
             @if(Auth::user()->id == $user->id)
-                <a href="/user/{{$user->username}}/edit-details/">
+                <a href="/edit-details/">
                     <div class="row mt-3 mb-0">
                         <div class="col-md-8 offset-md-2">
-                            <button class="btn bg-warning w-100">
-                                Edit user details
+                            <button class="btn text-white bg-info w-100">
+                                Edit User Details
+                            </button>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/edit-email/">
+                    <div class="row mt-3 mb-0">
+                        <div class="col-md-8 offset-md-2">
+                            <button class="btn text-white bg-info w-100">
+                                Change Email Address
+                            </button>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/edit-password/">
+                    <div class="row mt-3 mb-0">
+                        <div class="col-md-8 offset-md-2">
+                            <button class="btn text-white bg-info w-100">
+                                Change Password
+                            </button>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/delete-account/">
+                    <div class="row mt-3 mb-0">
+                        <div class="col-md-8 offset-md-2">
+                            <button class="btn text-white bg-danger w-100">
+                                Delete account
                             </button>
                         </div>
                     </div>
