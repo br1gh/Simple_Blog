@@ -17,7 +17,7 @@ use App\Http\Controllers\CommentController;
 |
 */
 
-Route::get('/', [PostController::class, 'show'])->name('posts');
+Route::get('/', [PostController::class, 'show']);
 Route::post('/', [PostController::class, 'store']);
 
 Route::get('user/{user:username}', [UserController::class, 'show']);
@@ -27,6 +27,12 @@ Route::post('edit-details', [UserController::class, 'update_details'])->middlewa
 
 Route::get('edit-email', [UserController::class, 'edit_email'])->middleware('auth');
 Route::post('edit-email', [UserController::class, 'update_email'])->middleware('auth');
+
+Route::get('edit-password', [UserController::class, 'edit_password'])->middleware('auth');
+Route::post('edit-password', [UserController::class, 'update_password'])->middleware('auth');
+
+Route::get('delete-account', [UserController::class, 'confirm_destroy'])->middleware('auth');
+Route::post('delete-account', [UserController::class, 'destroy'])->middleware('auth');
 
 Route::get('post/{post:slug}', [CommentController::class, 'show']);
 Route::post('post/{post:slug}', [CommentController::class, 'store']);

@@ -69,4 +69,47 @@ class UserController extends Controller
                 return redirect()->back()->withInput()->withErrors(['password' => 'The provided password is incorrect.']);
         }
     }
+
+    public function edit_password()
+    {
+        return view('edit-password');
+    }
+
+    public function update_password()
+    {
+        \request()->validate([
+            'password' => ['required', 'string', 'min:8', 'confirmed']
+        ]);
+
+        if (Hash::check(\request()->old_password, Auth::user()->password)) {
+            Auth::user()->update([
+                'password' => Hash::make(\request()->password)
+            ]);
+
+            return redirect("/user/" . Auth::user()->username);
+        } else
+            return redirect()->back()->withInput()->withErrors(['old_password' => 'The provided password is incorrect.']);
+    }
+
+    public function confirm_destroy()
+    {
+        return view('delete-user');
+    }
+
+    public function destroy()
+    {
+        \request()->validate([
+            'password' => ['required', 'string', 'min:8']
+        ]);
+
+        if (Hash::check(\request()->password, Auth::user()->password)) {
+            $user = Auth::user();
+
+            Auth::logout();
+
+            if ($user->delete())
+                return redirect('/')->withDanger('You account has been deleted!');;
+        }
+        return redirect()->back()->withInput()->withErrors(['password' => 'The provided password is incorrect.']);
+    }
 }

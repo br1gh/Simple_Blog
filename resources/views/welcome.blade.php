@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+    @if(Session::has('danger'))
+        <div class="alert alert-danger mt-4">
+            {{Session::get('danger')}}
+        </div>
+    @endif
+
     @auth
         @if(Auth::user()->hasVerifiedEmail())
             @include('add-post-form')
