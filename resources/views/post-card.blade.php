@@ -19,7 +19,7 @@
     <div class="card-body">
         <div class="row">
             @php
-                $path = "/photos/$post->id/post_image/$post->post_image";
+                $path = "photos/$post->id/post_image/$post->post_image";
                 if (Storage::disk('public')->exists($path))
                     echo "<div class='col-md-6 mb-3'><img src='/storage/$path' class='rounded img-fluid w-100' style='max-height: 300px; object-fit: cover;'></div>";
             @endphp
@@ -44,6 +44,15 @@
         <div class="row">
             <p>{!!$content!!}</p>
         </div>
+
+        @if(!Request::is('/'))
+            @php
+                $files = Storage::disk('public')->files("/photos/$post->id/post_gallery");
+            @endphp
+            @if($files)
+                @include('gallery')
+            @endif
+        @endif
 
         <a href="{{$button_action}}">
             <div class="row m-0">

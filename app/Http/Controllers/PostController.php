@@ -50,6 +50,13 @@ class PostController extends Controller
             );
         }
 
+        $gallery = \request('gallery');
+        if ($gallery) {
+            foreach ($gallery as $image) {
+                Storage::putfile("public/photos/$post_id/post_gallery", $image);
+            }
+        }
+
         return redirect('/');
     }
 
