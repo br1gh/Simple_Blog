@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="card text-white border-info mt-4">
-        <div class="card-header">Edit comment</div>
+        <div class="card-header">Edit Comment</div>
 
         <div class="card-body">
             <form action="/post/{{$slug}}/comment/{{$comment->id}}/edit" method="POST" enctype="multipart/form-data">
@@ -12,8 +12,7 @@
 
                     <div class="col-md-8">
                             <textarea id="body" class="form-control text-white @error('excerpt') is-invalid @enderror"
-                                      name="body" required
-                                      autocomplete="body"> {{$comment->body}}</textarea>
+                                      name="body" required> {{$comment->body}}</textarea>
 
                         @error('body')
                         <span class="invalid-feedback" role="alert">
@@ -29,8 +28,7 @@
                     <div class="col-md-8">
                         <input id="score" type="number" min="1" max="5" value="{{ $comment->score }}"
                                class="form-control text-white @error('score') is-invalid @enderror"
-                               name="score" required
-                               autocomplete="score">
+                               name="score" required>
 
                         @error('score')
                         <span class="invalid-feedback" role="alert">
@@ -42,8 +40,8 @@
 
                 <div class="row mb-0">
                     <div class="col-md-8 offset-md-2">
-                        <button type="submit" class="btn btn-info w-100">
-                            Edit comment
+                        <button type="submit" class="btn btn-info text-white w-100">
+                            Edit Comment
                         </button>
                     </div>
                 </div>

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="card text-white border-info mt-4" style="background-color: #282a36">
-        <div class="card-header">Edit email</div>
+        <div class="card-header">Change Email Address</div>
 
         <div class="card-body">
             <form method="POST" action="/edit-email/">
@@ -31,7 +31,7 @@
                     <div class="col-md-6">
                         <input id="password" type="password"
                                class="form-control text-white @error('password') is-invalid @enderror" name="password"
-                               required autocomplete="new-password">
+                               required autocomplete="current-password">
 
                         @error('password')
                         <span class="invalid-feedback" role="alert">
@@ -43,8 +43,8 @@
 
                 <div class="row mb-0">
                     <div class="col-md-6 offset-md-3">
-                        <button type="submit" class="btn btn-info w-100">
-                            Edit details
+                        <button type="submit" class="btn btn-info text-white w-100">
+                            Change Email Address
                         </button>
                     </div>
                 </div>

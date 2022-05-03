@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="card text-white mt-4" style="background-color: #282a36">
+    <div class="card text-white border-warning mt-4" style="background-color: #282a36">
         <div class="card-header">{{ __('Verify Your Email Address') }}</div>
 
         <div class="card-body">
@@ -16,7 +16,7 @@
             <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
                 @csrf
                 <button type="submit"
-                        class="btn btn-link p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>.
+                        class="btn btn-link text-warning p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>.
             </form>
         </div>
     </div>

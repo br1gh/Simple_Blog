@@ -3,7 +3,7 @@
 @section('content')
     <div class="card text-white border-info mt-4">
 
-        <div class="card-header">Edit post</div>
+        <div class="card-header">Edit Post</div>
 
         <div class="card-body">
             <form action="/post/{{$post->slug}}/edit" method="POST" enctype="multipart/form-data">
@@ -14,7 +14,7 @@
                     <div class="col-md-8">
                         <input id="title" type="text"
                                class="form-control text-white @error('title') is-invalid @enderror" name="title"
-                               value="{{$post->title}}" required autocomplete="title" autofocus>
+                               value="{{$post->title}}" required autofocus>
 
                         @error('title')
                         <span class="invalid-feedback" role="alert">
@@ -30,8 +30,7 @@
                     <div class="col-md-8">
                             <textarea id="excerpt"
                                       class="form-control text-white @error('excerpt') is-invalid @enderror"
-                                      name="excerpt" required
-                                      autocomplete="excerpt">{{ $post->excerpt }}</textarea>
+                                      name="excerpt" required>{{ $post->excerpt }}</textarea>
 
                         @error('excerpt')
                         <span class="invalid-feedback" role="alert">
@@ -46,7 +45,7 @@
 
                     <div class="col-md-8">
                             <textarea id="body" class="form-control text-white @error('body') is-invalid @enderror"
-                                      name="body" required autocomplete="body">{{ $post->body }}</textarea>
+                                      name="body" required>{{ $post->body }}</textarea>
 
                         @error('body')
                         <span class="invalid-feedback" role="alert">
@@ -62,8 +61,7 @@
                     <div class="col-md-8">
                         <input id="post_image" type="file"
                                class="form-control text-white @error('post_image') is-invalid @enderror"
-                               name="post_image"
-                               autocomplete="post_image" autofocus>
+                               name="post_image" autofocus>
 
                         @error('post_image')
                         <span class="invalid-feedback" role="alert">
@@ -75,8 +73,8 @@
 
                 <div class="row mb-0">
                     <div class="col-md-8 offset-md-2">
-                        <button type="submit" class="btn btn-info w-100">
-                            Edit post
+                        <button type="submit" class="btn btn-info text-white w-100">
+                            Edit Post
                         </button>
                     </div>
                 </div>

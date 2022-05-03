@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="card text-white mt-4" style="background-color: #282a36">
+    <div class="card text-white border-warning mt-4" style="background-color: #282a36">
 
         <div class="card-header">{{ __('Dashboard') }}</div>
 

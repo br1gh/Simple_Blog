@@ -94,7 +94,7 @@
                     <div class="row mt-3 mb-0">
                         <div class="col-md-8 offset-md-2">
                             <button class="btn text-white bg-danger w-100">
-                                Delete account
+                                Delete Account
                             </button>
                         </div>
                     </div>

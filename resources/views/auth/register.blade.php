@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="card text-white mt-4" style="background-color: #282a36">
+    <div class="card text-white border-warning mt-4" style="background-color: #282a36">
         <div class="card-header">{{ __('Register') }}</div>
 
         <div class="card-body">
@@ -30,7 +30,7 @@
                     <div class="col-md-6">
                         <input id="full_name" type="text"
                                class="form-control text-white @error('full_name') is-invalid @enderror" name="full_name"
-                               value="{{ old('full_name') }}" required autocomplete="full_name" autofocus>
+                               value="{{ old('full_name') }}" required autocomplete="name" autofocus>
 
                         @error('full_name')
                         <span class="invalid-feedback" role="alert">
@@ -84,7 +84,7 @@
 
                 <div class="row mb-0">
                     <div class="col-md-6 offset-md-3">
-                        <button type="submit" class="btn btn-primary w-100">
+                        <button type="submit" class="btn btn-warning w-100">
                             {{ __('Register') }}
                         </button>
                     </div>

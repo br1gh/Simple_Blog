@@ -35,11 +35,13 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="old_password" class="col-md-3 col-form-label text-md-end">{{ __('Current Password') }}</label>
+                    <label for="old_password"
+                           class="col-md-3 col-form-label text-md-end">{{ __('Current Password') }}</label>
 
                     <div class="col-md-6">
                         <input id="old_password" type="password"
-                               class="form-control text-white @error('old_password') is-invalid @enderror" name="old_password"
+                               class="form-control text-white @error('old_password') is-invalid @enderror"
+                               name="old_password"
                                required autocomplete="current-password">
 
                         @error('old_password')
@@ -52,7 +54,7 @@
 
                 <div class="row mb-0">
                     <div class="col-md-6 offset-md-3">
-                        <button type="submit" class="btn btn-info w-100">
+                        <button type="submit" class="btn btn-info text-white w-100">
                             Change Password
                         </button>
                     </div>

@@ -1,7 +1,7 @@
 @extends("layouts.app")
 
 @section('content')
-    @include('post-card', ['content' => $post->body, 'button' => '<- Go back', 'button_action' => "/"])
+    @include('post-card', ['content' => $post->body, 'button' => '← Go Back', 'button_action' => "/"])
     @auth
         @if(Auth::user()->hasVerifiedEmail())
             @include('add-comment-form')

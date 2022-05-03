@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="card text-white border-info mt-4" style="background-color: #282a36">
-        <div class="card-header">Edit details</div>
+        <div class="card-header">Edit Details</div>
 
         <div class="card-body">
             <form method="POST" action="/edit-details/">
@@ -30,7 +30,7 @@
                     <div class="col-md-6">
                         <input id="full_name" type="text"
                                class="form-control text-white @error('full_name') is-invalid @enderror" name="full_name"
-                               value="{{ Auth::user()->full_name }}" required autocomplete="full_name" autofocus>
+                               value="{{ Auth::user()->full_name }}" required autocomplete="name" autofocus>
 
                         @error('full_name')
                         <span class="invalid-feedback" role="alert">
@@ -42,8 +42,8 @@
 
                 <div class="row mb-0">
                     <div class="col-md-6 offset-md-3">
-                        <button type="submit" class="btn btn-info w-100">
-                            Edit details
+                        <button type="submit" class="btn btn-info text-white w-100">
+                            Edit Details
                         </button>
                     </div>
                 </div>

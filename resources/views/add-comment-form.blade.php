@@ -1,6 +1,6 @@
-<div class="card text-white mt-4 mb-4">
+<div class="card text-white border-success mt-4 mb-4">
 
-    <div class="card-header">Add new comment</div>
+    <div class="card-header">Add Comment</div>
 
     <div class="card-body">
         <form action="/post/{{$post->slug}}" method="POST" enctype="multipart/form-data">
@@ -11,8 +11,7 @@
 
                 <div class="col-md-8">
                             <textarea id="body" class="form-control text-white @error('excerpt') is-invalid @enderror"
-                                      name="body" required
-                                      autocomplete="body">{{ old('body') }}</textarea>
+                                      name="body" required>{{ old('body') }}</textarea>
 
                     @error('body')
                     <span class="invalid-feedback" role="alert">
@@ -28,8 +27,7 @@
                 <div class="col-md-8">
                     <input id="score" type="number" min="1" max="5" value="{{ old('score') }}"
                            class="form-control text-white @error('score') is-invalid @enderror"
-                           name="score" required
-                           autocomplete="score">
+                           name="score" required>
 
                     @error('score')
                     <span class="invalid-feedback" role="alert">
@@ -41,8 +39,8 @@
 
             <div class="row mb-0">
                 <div class="col-md-8 offset-md-2">
-                    <button type="submit" class="btn btn-success w-100">
-                        Add comment
+                    <button type="submit" class="btn btn-success text-white w-100">
+                        Add Comment
                     </button>
                 </div>
             </div>
