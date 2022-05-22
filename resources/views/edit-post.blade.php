@@ -71,6 +71,22 @@
                     </div>
                 </div>
 
+                <div class="row mb-3">
+                    <label for="gallery" class="col-md-2 col-form-label text-md-end">Gallery Images</label>
+
+                    <div class="col-md-8">
+                        <input id="gallery" type="file"
+                               class="form-control text-white @error('gallery') is-invalid @enderror" name="gallery[]"
+                               autofocus multiple>
+
+                        @error('gallery')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                </div>
+
                 <div class="row mb-0">
                     <div class="col-md-8 offset-md-2">
                         <button type="submit" class="btn btn-info text-white w-100">
@@ -79,6 +95,26 @@
                     </div>
                 </div>
             </form>
+
+            <a href="/post/{{$post->slug}}/delete-post-image/">
+                <div class="row mt-3 mb-0">
+                    <div class="col-md-8 offset-md-2">
+                        <button class="btn text-white bg-danger w-100">
+                            Delete Post Image
+                        </button>
+                    </div>
+                </div>
+            </a>
+
+            <a href="/post/{{$post->slug}}/delete-gallery/">
+                <div class="row mt-3 mb-0">
+                    <div class="col-md-8 offset-md-2">
+                        <button class="btn text-white bg-danger w-100">
+                            Delete Gallery
+                        </button>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
 @endsection

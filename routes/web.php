@@ -41,6 +41,8 @@ Route::get('post/{post:slug}/edit', [PostController::class, 'edit'])->middleware
 Route::post('post/{post:slug}/edit', [PostController::class, 'update'])->middleware('auth');
 
 Route::get('post/{post:slug}/delete', [PostController::class, 'destroy'])->middleware('auth');
+Route::get('post/{post:slug}/delete-gallery', [PostController::class, 'destroy_gallery'])->middleware('auth');
+Route::get('post/{post:slug}/delete-post-image', [PostController::class, 'destroy_post_image'])->middleware('auth');
 
 Route::get('post/{post:slug}/comment/{comment:id}/edit', [CommentController::class, 'edit'])->middleware('auth');
 Route::post('post/{post:slug}/comment/{comment:id}/edit', [CommentController::class, 'update'])->middleware('auth');

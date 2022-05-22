@@ -23,7 +23,7 @@ class PostController extends Controller
         \request()->validate([
             'title' => ['required', 'string', 'min:4', 'max:255'],
             'slug' => ['required', 'alpha_dash', 'max:255', 'unique:posts'],
-            'excerpt' => ['required', 'string', 'min:4', 'max:255'],
+            'excerpt' => ['required', 'string', 'min:4'],
             'body' => ['required', 'string', 'min:32'],
             'post_image' => ['image'],
             'gallery.*' => ['image']
@@ -74,9 +74,10 @@ class PostController extends Controller
     {
         \request()->validate([
             'title' => ['required', 'string', 'min:4', 'max:255'],
-            'excerpt' => ['required', 'string', 'min:4', 'max:255'],
+            'excerpt' => ['required', 'string', 'min:4'],
             'body' => ['required', 'string', 'min:32'],
             'post_image' => ['image'],
+            'gallery.*' => ['image']
         ]);
 
         if (\request()->file('post_image')) {
@@ -93,6 +94,16 @@ class PostController extends Controller
         } else
             $post_image_name = $post->post_image;
 
+        $gallery = \request('gallery');
+
+        if ($gallery) {
+            $path = "public/photos/$post->id/post_gallery";
+            Storage::deleteDirectory($path);
+            foreach ($gallery as $image) {
+                Storage::putfile($path, $image);
+            }
+        }
+
         $post->update([
             'title' => \request()->title,
             'excerpt' => \request()->excerpt,
@@ -100,14 +111,36 @@ class PostController extends Controller
             'post_image' => $post_image_name
         ]);
 
-        return redirect('/');
+        return redirect("post/$post->slug");
+    }
+
+
+    public function destroy_post_image(Post $post)
+    {
+        if (Auth::user()->id == $post->user->id) {
+            Storage::deleteDirectory("public/photos/$post->id/post_image");
+            $post->update([
+                'post_image' => 'post_image.jpg'
+            ]);
+            return redirect("post/$post->slug");
+        } else
+            abort(404);
+    }
+
+    public function destroy_gallery(Post $post)
+    {
+        if (Auth::user()->id == $post->user->id) {
+            Storage::deleteDirectory("public/photos/$post->id/post_gallery");
+            return redirect("post/$post->slug");
+        } else
+            abort(404);
     }
 
     public function destroy(Post $post)
     {
         if (Auth::user()->id == $post->user->id) {
             $post->delete();
-            Storage::disk('public')->deleteDirectory(("photos/$post->id"));
+            Storage::disk('public')->deleteDirectory("photos/$post->id");
             return redirect('/');
         } else
             abort(403);
