@@ -45,7 +45,7 @@
             <p>{!!$content!!}</p>
         </div>
 
-        @if(!Request::is('/'))
+        @if(Request::is("post/$post->slug"))
             @php
                 $files = Storage::disk('public')->files("/photos/$post->id/post_gallery");
             @endphp
