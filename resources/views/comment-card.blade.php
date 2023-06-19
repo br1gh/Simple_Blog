@@ -13,6 +13,9 @@
                         <i class="bi bi-trash text-danger h1"></i>
                     </a>
                 @endif
+{{--                <a href="{{route('report', ['type'=>'comment', 'id' => $comment->id])}}" class="col-1 p-0 text-center">--}}
+{{--                    <i class="bi bi-flag-fill text-warning h1"></i>--}}
+{{--                </a>--}}
             @endauth
         </div>
 

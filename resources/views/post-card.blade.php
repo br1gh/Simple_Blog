@@ -11,6 +11,10 @@
                     <a href="/post/{{$post->slug}}/delete" class="col-1 p-0 text-center">
                         <i class="bi bi-trash text-danger h1"></i>
                     </a>
+                @else
+{{--                    <a href="{{route('report', ['type'=>'post', 'id' => $post->id])}}" class="col-1 p-0 text-center">--}}
+{{--                        <i class="bi bi-flag-fill text-warning h1"></i>--}}
+{{--                    </a>--}}
                 @endif
             @endauth
         </div>
