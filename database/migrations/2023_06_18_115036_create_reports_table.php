@@ -21,6 +21,7 @@ class CreateReportsTable extends Migration
             $table->unsignedBigInteger('admin_id')->nullable();
             $table->text('description')->nullable();
             $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('penalty')->default(0);
             $table->timestamps();
         });
     }

@@ -32,7 +32,7 @@ class UserController extends Controller
             [
                 'show',
                 'edit',
-                'block',
+                'ban',
                 'restore',
                 'delete',
                 'forceDelete',

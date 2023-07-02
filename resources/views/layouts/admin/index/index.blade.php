@@ -88,7 +88,6 @@
         </div>
     </div>
     <div class="card table-card">
-
         <div class="row">
             <div class="col-md-6 card-body">
                 <div>
@@ -117,13 +116,14 @@
             <div class="card-body table-body">
             </div>
         </div>
-        @endsection
+    </div>
+@endsection
 
-        @push('js')
-            <script>
-                let tableUrl = "{{ route(request()->route()->getName()) }}";
-                let token = "{{ csrf_token() }}";
-            </script>
-            <script src="{{asset('admin/vendors/table/table.js')}}"></script>
-    @endpush
+@push('js')
+    <script>
+        let tableUrl = "{{ route(request()->route()->getName()) }}";
+        let token = "{{ csrf_token() }}";
+    </script>
+    <script src="{{asset('admin/vendors/table/table.js')}}"></script>
+@endpush
 

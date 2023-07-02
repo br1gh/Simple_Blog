@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="{{asset('admin/vendors/mdi/css/materialdesignicons.min.css')}}">
     <link rel="stylesheet" href="{{asset('admin/vendors/css/vendor.bundle.base.css')}}">
     <link rel="stylesheet" href="{{asset('admin/vendors/jvectormap/jquery-jvectormap.css')}}">
-    <link rel="stylesheet" href="{{asset('admin/vendors/flag-icon-css/css/flag-icon.min.css')}}">
     <link rel="stylesheet" href="{{asset('admin/vendors/owl-carousel-2/owl.carousel.min.css')}}">
     <link rel="stylesheet" href="{{asset('admin/vendors/owl-carousel-2/owl.theme.default.min.css')}}">
     <link rel="stylesheet" href="{{asset('admin/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('admin/vendors/select2/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('admin/vendors/select2-bootstrap-theme/select2-bootstrap.css')}}">
+    <link rel="stylesheet" href="{{asset('admin/vendors/css/bootstrap-datepicker.css')}}">
     <link rel="shortcut icon" href="{{asset('admin/images/favicon.png')}}"/>
 </head>
 <body>
@@ -62,7 +62,7 @@
                 @if(isset($nav['items']))
                     <li class="nav-item menu-items">
                         <a class="nav-link{{in_array($currentName, Arr::pluck($nav['items'], 'route')) ? ' active' : ''}}"
-                           data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic"
+                           data-bs-toggle="collapse" href="#{{$nav['label']}}" aria-expanded="false" aria-controls="{{$nav['label']}}"
                         >
                             <span class="menu-icon">
                                <i class="{{$nav['icon']}}"></i>
@@ -72,7 +72,7 @@
                             </span>
                             <i class="menu-arrow"></i>
                         </a>
-                        <div class="collapse" id="ui-basic">
+                        <div class="collapse" id="{{$nav['label']}}">
                             <ul class="nav flex-column sub-menu">
                                 @foreach(($nav['items']) as $item)
                                     <li class="nav-item">
@@ -104,8 +104,9 @@
     <div class="container-fluid page-body-wrapper">
         <nav class="navbar p-0 fixed-top d-flex flex-row">
             <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
-                <a class="navbar-brand brand-logo-mini" href="index.html"><img
-                        src="{{asset('admin/images/logo-mini.svg')}}" alt="logo"/></a>
+                <a class="navbar-brand brand-logo-mini" href="index.html">
+{{--                    <img src="{{asset('admin/images/logo-mini.svg')}}" alt="logo"/>--}}
+                </a>
             </div>
             <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -309,9 +310,18 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                              aria-labelledby="profileDropdown">
-                            <h6 class="p-3 mb-0">
-                                Profile
-                            </h6>
+                            <a class="dropdown-item preview-item" href="{{ route('user', ['user' => Auth::user()]) }}">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-account text-info"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject mb-1">
+                                        Profile
+                                    </p>
+                                </div>
+                            </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item preview-item" href="{{ route('admin.users.edit', ['id' => Auth::user()->id]) }}">
                                 <div class="preview-thumbnail">
@@ -344,10 +354,6 @@
                                     </p>
                                 </div>
                             </a>
-                            <div class="dropdown-divider"></div>
-                            <p class="p-3 mb-0 text-center">
-                                Advanced settings
-                            </p>
                         </div>
                     </li>
                 </ul>
@@ -380,6 +386,7 @@
 <script src="{{asset('admin/js/todolist.js')}}"></script>
 <script src="{{asset('admin/js/dashboard.js')}}"></script>
 <script src="{{asset('admin/vendors/select2/select2.min.js')}}"></script>
+<script src="{{asset('admin/js/bootstrap-datepicker.js')}}"></script>
 <script src="{{asset('admin/js/admin.js')}}"></script>
 
 @stack('js')

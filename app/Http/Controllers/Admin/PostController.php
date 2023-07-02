@@ -30,7 +30,6 @@ class PostController extends Controller
             ],
             [
                 'show',
-                'block',
                 'restore',
                 'delete',
                 'forceDelete',

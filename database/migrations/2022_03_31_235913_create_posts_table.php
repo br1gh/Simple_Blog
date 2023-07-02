@@ -21,7 +21,6 @@ class CreatePostsTable extends Migration
             $table->text('excerpt');
             $table->text('body');
             $table->string('post_image')->default('post_image.jpg');
-            $table->timestamp('blocked_until')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

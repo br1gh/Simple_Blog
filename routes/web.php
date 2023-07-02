@@ -58,10 +58,6 @@ Route::middleware('auth')
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        Route::get('/', function () {
-            return view('layouts.admin.app');
-        });
-
         Route::name('users.')
             ->prefix('users')
             ->group(function () {
@@ -85,6 +81,8 @@ Route::middleware('auth')
             ->prefix('reports')
             ->group(function () {
                 Route::get('/', [Admin\ReportController::class, 'index'])->name('index');
-//                Route::match(['get', 'post'], '/enforce/{id?}', [Admin\UserController::class, 'enforce'])->name('enforce');
+                Route::get('/force-delete/{id}', [Admin\ReportController::class, 'forceDelete'])->name('force-delete');
+                Route::get('/fetch/{id}', [Admin\ReportController::class, 'fetch'])->name('fetch');
+                Route::post('/enforce', [Admin\ReportController::class, 'enforce'])->name('enforce');
             });
     });
