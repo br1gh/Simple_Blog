@@ -83,7 +83,7 @@
         <main class="pb-4">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-md-8">
+                    <div>
                         @yield('content')
                     </div>
                 </div>
@@ -92,3 +92,10 @@
     </div>
 </body>
 </html>
+
+@if(in_array(request()->route()->uri, ["post/{post}/edit", "/"]))
+    <script src="//cdn.ckeditor.com/4.21.0/full/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('body');
+    </script>
+@endif
