@@ -8,7 +8,7 @@
     @endif
 
     @auth
-        @if(Auth::user()->hasVerifiedEmail())
+        @if(Auth::user()->hasVerifiedEmail() && !Auth::user()->isBanned())
             @include('add-post-form')
         @endif
     @endauth

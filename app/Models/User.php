@@ -55,4 +55,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function isBanned(): bool
+    {
+        return $this->banned_until > now();
+    }
 }

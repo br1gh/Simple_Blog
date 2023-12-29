@@ -22,6 +22,18 @@
 </head>
 <body class="body-bg">
     <div id="app">
+        @if(Auth::user()->isBanned())
+            <nav
+                class="navbar navbar-expand-md navbar-light {{Auth::user()->isBanned() ? 'progress-bar-striped' : ''}} shadow-sm justify-content-center"
+                style="background-color: {{Auth::user()->isBanned() ? 'red' : '#282a36'}}"
+            >
+                <span class="text-white">
+                    <b>
+                        Your account is banned until {{Auth::user()->banned_until}}. You cannot interact with the community.
+                    </b>
+                </span>
+            </nav>
+        @endif
         <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #282a36">
             <div class="container">
                 <a class="navbar-brand text-white" href="{{ url('/') }}">

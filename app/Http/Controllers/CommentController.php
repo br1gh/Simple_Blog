@@ -11,8 +11,17 @@ class CommentController extends Controller
 {
     public function show(Post $post)
     {
+        $comments = Comment::with('user')
+            ->whereDoesntHave('user', function ($query) {
+                $query->where('banned_until', '>', now());
+            })
+            ->where('post_id', $post->id)
+            ->orderByDesc('created_at')
+            ->get();
+
         return view('post', [
             'post' => $post,
+            'comments' => $comments,
         ]);
     }
 

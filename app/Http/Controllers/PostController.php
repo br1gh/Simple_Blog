@@ -14,7 +14,13 @@ class PostController extends Controller
     public function show()
     {
         return view('welcome', [
-            'posts' => Post::latest()->paginate(10)
+            'posts' =>
+                Post::with('user')
+                    ->whereDoesntHave('user', function ($query) {
+                        $query->where('banned_until', '>', now());
+                    })
+                    ->latest()
+                    ->paginate(10)
         ]);
     }
 
