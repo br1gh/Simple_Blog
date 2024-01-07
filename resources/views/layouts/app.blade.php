@@ -22,10 +22,10 @@
 </head>
 <body class="body-bg">
     <div id="app">
-        @if(Auth::user()->isBanned())
+        @if(Auth::user() && Auth::user()->isBanned())
             <nav
-                class="navbar navbar-expand-md navbar-light {{Auth::user()->isBanned() ? 'progress-bar-striped' : ''}} shadow-sm justify-content-center"
-                style="background-color: {{Auth::user()->isBanned() ? 'red' : '#282a36'}}"
+                class="navbar navbar-expand-md navbar-light progress-bar-striped shadow-sm justify-content-center"
+                style="background-color: red"
             >
                 <span class="text-white">
                     <b>
@@ -75,9 +75,21 @@
                                         Profile
                                     </a>
 
+                                    @can('admin')
+                                        <a class="dropdown-item text-black bg-warning"
+                                           href="{{ route('admin.users.index') }}">
+                                            Admin
+                                        </a>
+                                    @endcan
+
+                                    <a class="dropdown-item text-black bg-warning"
+                                       href="{{ route('post', ['post' => \App\Models\Post::find(1)->slug]) }}">
+                                        Rules
+                                    </a>
+
                                     <a class="dropdown-item text-black bg-warning" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                    >
                                         {{ __('Logout') }}
                                     </a>
 

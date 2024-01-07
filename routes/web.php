@@ -54,7 +54,7 @@ Route::middleware('auth')
         Route::get('/report/{type}/{id}', [ReportController::class, 'report'])->name('report');
     });
 
-Route::middleware('auth')
+Route::middleware('auth.admin')
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {

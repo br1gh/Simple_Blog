@@ -21,11 +21,11 @@
 <div class="container-scroller">
     <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-            <a class="sidebar-brand brand-logo" href="index.html">
+            <a class="sidebar-brand brand-logo" href="{{route('admin.users.index')}}">
                 Simple Blog
 {{--                <img src="{{asset('admin/images/logo.svg')}}" alt="logo"/>--}}
             </a>
-            <a class="sidebar-brand brand-logo-mini" href="index.html">
+            <a class="sidebar-brand brand-logo-mini" href="{{route('admin.users.index')}}">
                 SB
 {{--                <img src="{{asset('admin/images/logo-mini.svg')}}" alt="logo"/>--}}
             </a>
