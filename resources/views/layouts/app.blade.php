@@ -11,6 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{asset('admin/js/jquery.js')}}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -114,12 +115,16 @@
             </div>
         </main>
     </div>
+    @stack('js')
+    @stack('js.end')
 </body>
 </html>
 
 @if(in_array(request()->route()->uri, ["post/{post}/edit", "/"]))
     <script src="//cdn.ckeditor.com/4.21.0/full/ckeditor.js"></script>
     <script>
-        CKEDITOR.replace('body');
+        CKEDITOR.replace('body', {
+            allowedContent: true
+        });
     </script>
 @endif

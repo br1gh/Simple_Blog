@@ -24,6 +24,9 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('user/{user:username}', [UserController::class, 'show'])->name('user');
 Route::get('post/{post:slug}', [CommentController::class, 'show'])->name('post');
 Route::post('post/{post:slug}', [CommentController::class, 'store']);
+Route::get('/fetch-gallery/{id}', [PostController::class, 'fetchGallery'])->name('fetch-gallery');
+Route::post('/add-to-gallery/{id}', [PostController::class, 'addToGallery'])->name('add-to-gallery');
+Route::post('/delete-from-gallery', [PostController::class, 'deleteFromGallery'])->name('delete-from-gallery');
 
 Route::middleware('auth')
     ->group(function () {

@@ -83,7 +83,6 @@ class PostController extends Controller
             'excerpt' => ['required', 'string', 'min:4'],
             'body' => ['required', 'string', 'min:32'],
             'post_image' => ['image'],
-            'gallery.*' => ['image']
         ]);
 
         if (\request()->file('post_image')) {
@@ -99,16 +98,6 @@ class PostController extends Controller
             );
         } else
             $post_image_name = $post->post_image;
-
-        $gallery = \request('gallery');
-
-        if ($gallery) {
-            $path = "public/photos/$post->id/post_gallery";
-            Storage::deleteDirectory($path);
-            foreach ($gallery as $image) {
-                Storage::putfile($path, $image);
-            }
-        }
 
         $post->update([
             'title' => \request()->title,
@@ -150,5 +139,36 @@ class PostController extends Controller
             return redirect('/');
         } else
             abort(403);
+    }
+
+    public function fetchGallery(int $id)
+    {
+        $files = Storage::disk('public')->files("/photos/$id/post_gallery");
+        $files = array_chunk($files, 4);
+
+        return response()->json(view('gallery', compact('files'))->render());
+    }
+
+    public function addToGallery(int $id)
+    {
+        $files = \request('files');
+
+        foreach ($files as $file) {
+            Storage::putfile("public/photos/$id/post_gallery", $file);
+        }
+
+        return response()->json();
+    }
+
+    public function deleteFromGallery()
+    {
+        $path = \request()->post('path');
+
+        try {
+            Storage::delete('public/' . $path);
+        } catch (\Exception $e) {
+        }
+
+        return response()->json();
     }
 }

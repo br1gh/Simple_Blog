@@ -49,15 +49,6 @@
             <p>{!!$content!!}</p>
         </div>
 
-        @if(Request::is("post/$post->slug"))
-            @php
-                $files = Storage::disk('public')->files("/photos/$post->id/post_gallery");
-            @endphp
-            @if($files)
-                @include('gallery')
-            @endif
-        @endif
-
         <a href="{{$button_action}}">
             <div class="row m-0">
                 <button class="btn btn-primary btn-lg btn-block">
