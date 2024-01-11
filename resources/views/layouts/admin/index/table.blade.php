@@ -69,7 +69,7 @@
                                     <i class="mdi mdi-block-helper m-0"></i>
                                 </a>
                             @endif
-                            @if(in_array('restore', $actions) && Auth::user()->id === 1 && $item->deleted_at)
+                            @if(in_array('restore', $actions) && Auth::user()->isSuperAdmin() && $item->deleted_at)
                                 <a href="{{route('admin.'.$tableName.'.restore', ['id' => $item->id])}}"
                                    class="btn btn-success">
                                     <i class="mdi mdi-backup-restore m-0"></i>
@@ -81,7 +81,7 @@
                                     <i class="mdi mdi-trash-can m-0"></i>
                                 </a>
                             @endif
-                            @if(in_array('forceDelete', $actions) && Auth::user()->id === 1)
+                            @if(in_array('forceDelete', $actions) && Auth::user()->isSuperAdmin())
                                 <a href="{{route('admin.'.$tableName.'.force-delete', ['id' => $item->id])}}"
                                    class="btn btn-danger">
                                     <i class="mdi mdi-fire m-0"></i>

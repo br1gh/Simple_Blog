@@ -58,7 +58,7 @@ class Table
             $db->leftJoin('users', 'users.id', '=', 'reports.user_id');
         }
 
-        if ($this->tableName === 'users') {
+        if (in_array($this->tableName,  ['users', 'posts'])) {
             $db->where('id', '<>', 1);
         }
 

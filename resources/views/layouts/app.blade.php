@@ -75,12 +75,12 @@
                                         Profile
                                     </a>
 
-                                    @can('admin')
+                                    @if(Auth::user() && Auth::user()->isAdmin())
                                         <a class="dropdown-item text-black bg-warning"
                                            href="{{ route('admin.users.index') }}">
                                             Admin
                                         </a>
-                                    @endcan
+                                    @endif
 
                                     <a class="dropdown-item text-black bg-warning"
                                        href="{{ route('post', ['post' => \App\Models\Post::find(1)->slug]) }}">

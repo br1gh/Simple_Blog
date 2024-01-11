@@ -38,6 +38,13 @@
                         :name="'password_confirmation'"
                     />
 
+                    @if(Auth::user()->isSuperAdmin())
+                        <x-input.checkbox
+                            :label="'Admin'"
+                            :name="'is_admin'"
+                        />
+                    @endif
+
                     @include('layouts.admin.edit.buttons')
                 </form>
             </div>

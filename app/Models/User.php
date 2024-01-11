@@ -60,4 +60,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->banned_until > now();
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->is_admin === 1 || $this->isSuperAdmin();
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->id === 1;
+    }
 }

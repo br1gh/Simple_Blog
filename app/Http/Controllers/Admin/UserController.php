@@ -50,7 +50,7 @@ class UserController extends Controller
 
     public function edit($id = 0)
     {
-        if ($id === 1 && Auth::user()->id !== 1) {
+        if ($id === 1 && !Auth::user()->isSuperAdmin()) {
             return redirect()->route('admin.users.edit');
         }
 
@@ -120,7 +120,7 @@ class UserController extends Controller
 
     public function forceDelete($id)
     {
-        if (Auth::user()->id !== 1) {
+        if (!Auth::user()->isSuperAdmin()) {
             return redirect()->route('admin.users.index');
         }
 
@@ -142,7 +142,7 @@ class UserController extends Controller
 
     public function restore($id)
     {
-        if (Auth::user()->id !== 1) {
+        if (!Auth::user()->isSuperAdmin()) {
             return redirect()->route('admin.users.index');
         }
 

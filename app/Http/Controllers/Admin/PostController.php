@@ -65,7 +65,7 @@ class PostController extends Controller
 
     public function forceDelete($id)
     {
-        if (Auth::user()->id !== 1) {
+        if (!Auth::user()->isSuperAdmin()) {
             return redirect()->route('admin.posts.index');
         }
 
@@ -87,7 +87,7 @@ class PostController extends Controller
 
     public function restore($id)
     {
-        if (Auth::user()->id !== 1) {
+        if (!Auth::user()->isSuperAdmin()) {
             return redirect()->route('admin.posts.index');
         }
 

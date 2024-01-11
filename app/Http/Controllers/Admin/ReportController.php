@@ -116,7 +116,7 @@ class ReportController extends Controller
 
     public function forceDelete($id)
     {
-        if (Auth::user()->id !== 1) {
+        if (!Auth::user()->isSuperAdmin()) {
             return redirect()->route('admin.users.index');
         }
 

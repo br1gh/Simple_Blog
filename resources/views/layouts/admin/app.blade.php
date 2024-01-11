@@ -43,7 +43,7 @@
                                 {{Auth::user()->username}}
                             </h5>
                             <span>
-                                {{Auth::id() === 1 ? 'Super Admin' : 'Admin'}}
+                                {{Auth::user()->isSuperAdmin() ? 'Super Admin' : 'Admin'}}
                             </span>
                         </div>
                     </div>
