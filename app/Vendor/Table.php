@@ -2,6 +2,7 @@
 
 namespace App\Vendor;
 
+use App\Enums\ReportStatus;
 use Illuminate\Support\Facades\DB;
 
 class Table
@@ -13,6 +14,7 @@ class Table
     private $headers;
     public $orderableColumns;
     private $actions;
+    public $reportStatus;
 
     public function __construct(
         string $tableName,
@@ -20,7 +22,8 @@ class Table
         array  $sqlSelect,
         array  $columns,
         array  $actions = [],
-        array  $orderableColumns = []
+        array  $orderableColumns = [],
+        ?string $reportStatus = null
     )
     {
         $this->tableName = $tableName;
@@ -30,6 +33,7 @@ class Table
         $this->headers = array_values($this->columns);
         $this->orderableColumns = $orderableColumns ?: $this->columns;
         $this->actions = $actions;
+        $this->reportStatus = $reportStatus;
     }
 
     public function render(): array
@@ -60,6 +64,10 @@ class Table
 
         if (in_array($this->tableName,  ['users', 'posts'])) {
             $db->where('id', '<>', 1);
+        }
+
+        if ($this->tableName === 'reports') {
+            $db->where('status', ReportStatus::getStatusFromString($this->reportStatus));
         }
 
 //        if ($filter) {
@@ -95,6 +103,7 @@ class Table
                 'tableName' => $this->tableName,
                 'showRouteName' => $this->showRouteName,
                 'actions' => $this->actions,
+                'reportStatus' => $this->reportStatus,
             ])->render(),
             'lastPage' => $items->lastPage(),
             'currentPage' => $items->currentPage(),

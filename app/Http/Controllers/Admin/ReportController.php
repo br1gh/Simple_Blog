@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
-    public function index()
+    public function index($status = 'pending')
     {
         $table = new Table(
             'reports',
@@ -32,8 +32,11 @@ class ReportController extends Controller
             ],
             [
                 'enforce',
+                'pardon',
                 'forceDelete',
-            ]
+            ],
+            [],
+            $status
         );
 
         if (request()->ajax()) {
@@ -112,6 +115,49 @@ class ReportController extends Controller
         }
         toastr('Report ' . ($status == ReportStatus::ENFORCED ? 'enforced' : 'rejected') . ' successfully');
         return true;
+    }
+
+    public function pardon($id)
+    {
+        $report = Report::where('status', ReportStatus::ENFORCED)->findOrFail($id);
+
+        DB::beginTransaction();
+        try {
+            switch ($report->penalty) {
+                case PenaltyType::BAN:
+                    $user = User::find($report->object_id);
+                    $user->banned_until = null;
+                    $user->save();
+                    break;
+                case PenaltyType::DELETE_USER:
+                    $user = User::find($report->object_id);
+                    $user->restore();
+                    break;
+                case PenaltyType::DELETE_POST:
+                    $post = Post::find($report->object_id);
+                    $post->restore();
+                    break;
+                case PenaltyType::DELETE_COMMENT:
+                    $comment = Comment::find($report->object_id);
+                    $comment->restore();
+                    break;
+            }
+
+            $report->fill([
+                'status' => ReportStatus::REJECTED,
+                'admin_id' => Auth::id(),
+            ]);
+
+            $report->save();
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            toastr()->error('Something went wrong');
+            return redirect()->route('admin.reports.index', ['type' => 'enforced']);
+        }
+
+        toastr('Pardoned successfully');
+        return redirect()->route('admin.reports.index', ['type' => 'enforced']);
     }
 
     public function forceDelete($id)

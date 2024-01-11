@@ -30,8 +30,19 @@ return [
         'icon' => 'mdi mdi-flag',
         'items' => [
             [
-                'label' => 'List',
+                'label' => 'Pending',
                 'route' => 'admin.reports.index',
+                'parameters' => ['type' => 'pending'],
+            ],
+            [
+                'label' => 'Rejected',
+                'route' => 'admin.reports.index',
+                'parameters' => ['type' => 'rejected'],
+            ],
+            [
+                'label' => 'Enforced',
+                'route' => 'admin.reports.index',
+                'parameters' => ['type' => 'enforced'],
             ],
         ],
     ],

@@ -121,7 +121,7 @@
 
 @push('js')
     <script>
-        let tableUrl = "{{ route(request()->route()->getName()) }}";
+        let tableUrl = "{{ url()->current() }}";
         let token = "{{ csrf_token() }}";
     </script>
     <script src="{{asset('admin/vendors/table/table.js')}}"></script>

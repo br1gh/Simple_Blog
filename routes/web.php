@@ -80,9 +80,10 @@ Route::middleware('auth.admin')
         Route::name('reports.')
             ->prefix('reports')
             ->group(function () {
-                Route::get('/', [Admin\ReportController::class, 'index'])->name('index');
+                Route::get('/list/{type?}', [Admin\ReportController::class, 'index'])->name('index');
                 Route::get('/force-delete/{id}', [Admin\ReportController::class, 'forceDelete'])->name('force-delete');
                 Route::get('/fetch/{id}', [Admin\ReportController::class, 'fetch'])->name('fetch');
+                Route::get('/pardon/{id}', [Admin\ReportController::class, 'pardon'])->name('pardon');
                 Route::post('/enforce', [Admin\ReportController::class, 'enforce'])->name('enforce');
             });
     });

@@ -12,7 +12,9 @@
             @endforeach
             @if($tableName === 'reports')
                 <th>Reported by</th>
-                <th>Status</th>
+                @if($reportStatus === 'enforced')
+                    <th>Penalty</th>
+                @endif
             @endif
         </tr>
         </thead>
@@ -39,16 +41,22 @@
                 <tr>
                     @if($actions)
                         <td>
-                            @if(in_array('enforce', $actions))
+                            @if(in_array('enforce', $actions) && $reportStatus !== 'enforced')
                                 <button type="button" class="btn btn-warning show-modal" data-toggle="modal"
                                         data-target="#exampleModal"
                                         data-id="{{$item->id}}"
                                         data-object-id="{{$item->object_id}}"
                                         data-object-type="{{$item->object_type}}"
                                         data-url="{{route('admin.reports.fetch', ['id' => $item->id])}}"
-                                    {{$item->status == 0 ? '' : 'disabled'}}>
+                                >
                                     <i class="mdi mdi-gavel m-0"></i>
                                 </button>
+                            @endif
+                            @if(in_array('pardon', $actions))
+                                <a href="{{route('admin.reports.pardon', ['id' => $item->id])}}"
+                                   class="btn btn-success">
+                                    <i class="mdi mdi-undo-variant m-0"></i>
+                                </a>
                             @endif
                             @if(in_array('show', $actions))
                                 <a href="{{route($showRouteName, $showRouteParameters)}}"
@@ -100,38 +108,30 @@
                                 {{$item->username}}
                             </a>
                         </td>
-                        <td>
-                            @switch($item->status)
-                                @case(-1)
-                                    <label class="badge badge-danger">Rejected</label>
-                                    @break
-                                @case(1)
-                                    <label class="badge badge-success">Enforced</label>
-                                    @if($item->penalty)
-                                        <label class="badge badge-warning">
-                                            @switch($item->penalty)
-                                                @case(\App\Enums\PenaltyType::BAN)
-                                                    User Banned
-                                                    @break
-                                                @case(\App\Enums\PenaltyType::DELETE_COMMENT)
-                                                    Comment Deleted
-                                                    @break
-                                                @case(\App\Enums\PenaltyType::DELETE_POST)
-                                                    Post Deleted
-                                                    @break
-                                                @case(\App\Enums\PenaltyType::DELETE_USER)
-                                                    User Deleted
-                                                    @break
-                                                @default
-                                                    @break
-                                            @endswitch
-                                        </label>
-                                    @endif
-                                    @break
-                                @default
-                                    <label class="badge badge-info">Pending</label>
-                            @endswitch
-                        </td>
+                        @if($reportStatus === 'enforced')
+                            <td>
+                                @if($item->penalty)
+                                    <label class="badge badge-warning">
+                                        @switch($item->penalty)
+                                            @case(\App\Enums\PenaltyType::BAN)
+                                                User Banned
+                                                @break
+                                            @case(\App\Enums\PenaltyType::DELETE_COMMENT)
+                                                Comment Deleted
+                                                @break
+                                            @case(\App\Enums\PenaltyType::DELETE_POST)
+                                                Post Deleted
+                                                @break
+                                            @case(\App\Enums\PenaltyType::DELETE_USER)
+                                                User Deleted
+                                                @break
+                                            @default
+                                                @break
+                                        @endswitch
+                                    </label>
+                                @endif
+                            </td>
+                        @endif
                     @endif
                 </tr>
             @endforeach
@@ -181,9 +181,11 @@
                             data-status="1">
                         <i class="mdi mdi-gavel btn-icon-prepend"></i> Delete User
                     </button>
-                    <button id="reject" type="button" class="btn btn-danger enforce-button" data-status="-1">
-                        <i class="mdi mdi mdi-shredder btn-icon-prepend"></i> Reject
-                    </button>
+                    @if($reportStatus === 'pending')
+                        <button id="reject" type="button" class="btn btn-danger enforce-button" data-status="-1">
+                            <i class="mdi mdi mdi-shredder btn-icon-prepend"></i> Reject
+                        </button>
+                    @endif
                 </div>
             </form>
         </div>
