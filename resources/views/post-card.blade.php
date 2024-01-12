@@ -6,15 +6,16 @@
                 <div class="col-2 d-flex justify-content-end">
                     @if(Auth::user()->id == $post->user->id)
                         <a href="/post/{{$post->slug}}/edit" style="margin-right: 10px">
-                            <i class="bi bi-pencil-square text-info h1 text-info"></i>
+                            <i class="bi bi-pencil-square text-info h1"></i>
                         </a>
                         <a href="/post/{{$post->slug}}/delete">
                             <i class="bi bi-trash text-danger h1"></i>
                         </a>
                     @else
-                        <a href="{{route('report', ['type'=>'post', 'id' => $post->id])}}">
+                        <button class="report-post border-0 p-0" data-id="{{$post->id}}" data-bs-toggle="modal"
+                                data-bs-target="#report-post-modal" style="background-color: #282A36">
                             <i class="bi bi-flag-fill text-warning h1"></i>
-                        </a>
+                        </button>
                     @endif
                 </div>
             @endauth
@@ -63,3 +64,10 @@
         </a>
     </div>
 </div>
+@include('components.modal.report-file', ['type' => 'post'], ['id' => 'report-post-modal'])
+
+<script>
+    let url = '{{route('report')}}';
+    let token = '{{csrf_token()}}';
+</script>
+<script src="{{asset('js/report-modal.js')}}"></script>

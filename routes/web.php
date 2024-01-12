@@ -54,7 +54,7 @@ Route::middleware('auth')
 
         Route::get('post/{post:slug}/comment/{comment:id}/delete', [CommentController::class, 'destroy']);
 
-        Route::get('/report/{type}/{id}', [ReportController::class, 'report'])->name('report');
+        Route::post('/report', [ReportController::class, 'report'])->name('report');
     });
 
 Route::middleware('auth.admin')

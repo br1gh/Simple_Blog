@@ -10,4 +10,8 @@
     @foreach($comments as $comment)
         @include('comment-card')
     @endforeach
+
+    @include('components.modal.report-file', ['type' => 'comment'], ['id' => 'report-comment-modal'])
+
+    <script src="{{asset('js/report-modal.js')}}"></script>
 @endsection

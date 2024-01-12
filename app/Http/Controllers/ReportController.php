@@ -6,21 +6,24 @@ use App\Models\Report;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class ReportController extends Controller
 {
-    public function report($type, $id)
+    /**
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     */
+    public function report()
     {
-        if (!in_array($type, ['user', 'post', 'comment'])) {
-            return back();
-        }
+        $type = request()->get('type', null);
+        $id = request()->get('id', null);
+        $description = request()->get('description', null);
 
-        $description = request()->get('description');
-        $model = 'App\Models\\' . ucfirst($type);
-        $obj = $model::find($id);
-
-        if (!$obj) {
-            return back();
+        if (in_array(null, [$type, $id])) {
+            throw new Exception('Invalid request');
         }
 
         DB::beginTransaction();
@@ -36,11 +39,9 @@ class ReportController extends Controller
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
-            toastr()->error('Something went wrong');
-            return back();
+            throw $exception;
         }
 
-        toastr(ucfirst($type) . ' has been reported!');
-        return back();
+        return response()->json();
     }
 }

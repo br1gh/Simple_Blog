@@ -18,4 +18,12 @@
         @include('post-card', ['content' => $post->excerpt, 'button' => 'Read More', 'button_action' => "/post/$post->slug"])
     @endforeach
     <div class="mt-4">{{$posts->links()}}</div>
+
+    @include('components.modal.report-file', ['type' => 'post'], ['id' => 'report-post-modal'])
+
+    <script>
+        let url = '{{route('report')}}';
+        let token = '{{csrf_token()}}';
+    </script>
+    <script src="{{asset('js/report-modal.js')}}"></script>
 @endsection
