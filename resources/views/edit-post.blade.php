@@ -59,15 +59,28 @@
                     <label for="post_image" class="col-md-2 col-form-label text-md-end">Post Image</label>
 
                     <div class="col-md-8">
-                        <input id="post_image" type="file"
-                               class="form-control text-white @error('post_image') is-invalid @enderror"
-                               name="post_image" autofocus>
-
-                        @error('post_image')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
+                        <div class="row">
+                            <div>
+                                <div class="input-group mb-0">
+                                    <input id="post_image" type="file"
+                                           class="form-control text-white @error('post_image') is-invalid @enderror"
+                                           name="post_image" autofocus>
+                                    @if($post->post_image)
+                                        <div class="input-group-append">
+                                            <button class="btn btn-light" type="button"
+                                                    onclick="window.open('{{asset("storage/photos/$post->id/post_image/$post->post_image")}}')">
+                                                Show current image
+                                            </button>
+                                        </div>
+                                    @endif
+                                    @error('post_image')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

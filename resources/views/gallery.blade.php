@@ -32,3 +32,19 @@
         @endif
     </div>
 @endforeach
+
+@if(!$files)
+    <div class="row mb-0">
+        <div class="col-md-3 mb-4">
+            <div class="position-relative ratio ratio-1x1">
+                <label for="newGalleryItem" class="d-flex justify-content-center align-items-center w-100 h-100">
+                    <input type="file" id="newGalleryItem" class="visually-hidden" name="gallery[]" autofocus
+                           multiple accept="image/*" onchange="addFilesToGallery()">
+                    <span class="btn btn-primary">
+                            <i class="bi bi-plus"></i> Add New
+                    </span>
+                </label>
+            </div>
+        </div>
+    </div>
+@endif

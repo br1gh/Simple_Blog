@@ -22,7 +22,8 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->text('excerpt');
             $table->text('body');
-            $table->string('post_image')->default('post_image.jpg');
+            $table->string('post_image')->nullable()->default(null);
+            $table->boolean('is_published')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -52,7 +52,7 @@
                                     <i class="mdi mdi-gavel m-0"></i>
                                 </button>
                             @endif
-                            @if(in_array('pardon', $actions))
+                            @if(in_array('pardon', $actions) && $reportStatus === 'enforced')
                                 <a href="{{route('admin.reports.pardon', ['id' => $item->id])}}"
                                    class="btn btn-success">
                                     <i class="mdi mdi-undo-variant m-0"></i>

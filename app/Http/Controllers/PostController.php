@@ -35,20 +35,21 @@ class PostController extends Controller
             'gallery.*' => ['image']
         ]);
 
-        if (\request()->post_image) {
-            $post_image = \request()->file('post_image');
-            $post_image_name = $post_image->getClientOriginalName();
-        } else
-            $post_image_name = 'post_image.jpg';
-
-        $post_id = Post::create([
+        $attributes = [
             'user_id' => Auth::user()->id,
             'title' => \request()->title,
             'slug' => \request()->slug,
             'excerpt' => \request()->excerpt,
             'body' => \request()->body,
-            'post_image' => $post_image_name
-        ])->id;
+        ];
+
+        if (\request()->post_image) {
+            $post_image = \request()->file('post_image');
+            $post_image_name = $post_image->getClientOriginalName();
+            $attributes['post_image'] = $post_image_name;
+        }
+
+        $post_id = Post::create($attributes)->id;
 
         if (\request()->post_image) {
             Storage::putFileAs(
@@ -85,6 +86,12 @@ class PostController extends Controller
             'post_image' => ['image'],
         ]);
 
+        $attributes = [
+            'title' => \request()->title,
+            'excerpt' => \request()->excerpt,
+            'body' => \request()->body,
+        ];
+
         if (\request()->file('post_image')) {
             $post_image = \request()->file('post_image');
             $post_image_name = $post_image->getClientOriginalName();
@@ -96,15 +103,11 @@ class PostController extends Controller
             Storage::putFileAs(
                 "public/photos/$post->id/post_image", $post_image, $post_image_name
             );
-        } else
-            $post_image_name = $post->post_image;
 
-        $post->update([
-            'title' => \request()->title,
-            'excerpt' => \request()->excerpt,
-            'body' => \request()->body,
-            'post_image' => $post_image_name
-        ]);
+            $attributes['post_image'] = $post_image_name;
+        }
+
+        $post->update($attributes);
 
         return redirect("post/$post->slug");
     }
@@ -115,7 +118,7 @@ class PostController extends Controller
         if (Auth::user()->id == $post->user->id) {
             Storage::deleteDirectory("public/photos/$post->id/post_image");
             $post->update([
-                'post_image' => 'post_image.jpg'
+                'post_image' => null,
             ]);
             return redirect("post/$post->slug");
         } else
