@@ -13,5 +13,9 @@
 
     @include('components.modal.report-file', ['type' => 'comment'], ['id' => 'report-comment-modal'])
 
+    <script>
+        let url = '{{route('report')}}';
+        let token = '{{csrf_token()}}';
+    </script>
     <script src="{{asset('js/report-modal.js')}}"></script>
 @endsection

@@ -65,9 +65,3 @@
     </div>
 </div>
 @include('components.modal.report-file', ['type' => 'post'], ['id' => 'report-post-modal'])
-
-<script>
-    let url = '{{route('report')}}';
-    let token = '{{csrf_token()}}';
-</script>
-<script src="{{asset('js/report-modal.js')}}"></script>

@@ -26,6 +26,15 @@
                 <div class="card-header">
                     <div class="row pt-2">
                         <h1 class="col-10">{{$comment->post->title}}</h1>
+                        @if(Auth::user()->id != $comment->post->user_id)
+                            <div class="col-2 d-flex justify-content-end">
+                                <button class="report-post border-0 p-0" data-id="{{$comment->post->id}}"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#report-post-modal" style="background-color: #282A36">
+                                    <i class="bi bi-flag-fill text-warning h1"></i>
+                                </button>
+                            </div>
+                        @endif
                     </div>
 
                     <div class="mb-3">
@@ -48,4 +57,13 @@
             </div>
         @endforeach
     @endif
+
+    @include('components.modal.report-file', ['type' => 'user'], ['id' => 'report-user-modal'])
+    @include('components.modal.report-file', ['type' => 'comment'], ['id' => 'report-comment-modal'])
+
+    <script>
+        let url = '{{route('report')}}';
+        let token = '{{csrf_token()}}';
+    </script>
+    <script src="{{asset('js/report-modal.js')}}"></script>
 @endsection

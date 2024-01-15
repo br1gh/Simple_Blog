@@ -18,6 +18,16 @@ $('#report-comment-submit').click(function () {
     report('comment', id, description, url, token);
 });
 
+$('.report-user').click(function () {
+    $('#report-user-submit').attr('data-id', $(this).attr('data-id'));
+});
+
+$('#report-user-submit').click(function () {
+    let id = $(this).attr('data-id');
+    let description = $('#report-user-description').val();
+    report('user', id, description, url, token);
+});
+
 function report(type, id, description, url, token) {
     $.ajax({
         url: url,
@@ -39,3 +49,7 @@ function report(type, id, description, url, token) {
         }
     });
 }
+
+$('.modal').on('hidden.bs.modal', function () {
+    $(this).find('form').trigger('reset');
+});
