@@ -143,7 +143,7 @@
                             </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item preview-item"
-                               href="{{ route('admin.users.edit', ['id' => Auth::user()->id]) }}">
+                               href="{{ route('admin.users.edit', ['id' => Auth::id()]) }}">
                                 <div class="preview-thumbnail">
                                     <div class="preview-icon bg-dark rounded-circle">
                                         <i class="mdi mdi-settings text-success"></i>

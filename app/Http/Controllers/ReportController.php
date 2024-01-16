@@ -21,6 +21,7 @@ class ReportController extends Controller
         $type = request()->get('type', null);
         $id = request()->get('id', null);
         $description = request()->get('description', null);
+        dd($type, $id, $description);
 
         if (in_array(null, [$type, $id])) {
             throw new Exception('Invalid request');

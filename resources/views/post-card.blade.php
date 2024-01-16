@@ -4,7 +4,7 @@
             <h1 class="col-10">{{$post->title}}</h1>
             @auth
                 <div class="col-2 d-flex justify-content-end">
-                    @if(Auth::user()->id == $post->user->id)
+                    @if(Auth::id() == $post->user->id)
                         <a href="/post/{{$post->slug}}/edit" style="margin-right: 10px">
                             <i class="bi bi-pencil-square text-info h1"></i>
                         </a>

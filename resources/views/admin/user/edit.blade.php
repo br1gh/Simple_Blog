@@ -38,7 +38,7 @@
                         :name="'password_confirmation'"
                     />
 
-                    @if(Auth::user()->isSuperAdmin() && $obj->id != Auth::user()->id)
+                    @if(Auth::user()->isSuperAdmin() && $obj->id != Auth::id())
                         <x-input.checkbox
                             :label="'Admin'"
                             :name="'is_admin'"

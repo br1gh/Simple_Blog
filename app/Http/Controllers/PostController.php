@@ -36,7 +36,7 @@ class PostController extends Controller
         ]);
 
         $attributes = [
-            'user_id' => Auth::user()->id,
+            'user_id' => Auth::id(),
             'title' => \request()->title,
             'slug' => \request()->slug,
             'excerpt' => \request()->excerpt,
@@ -69,7 +69,7 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        if (Auth::user()->id == $post->user->id) {
+        if (Auth::id() == $post->user->id) {
             return view('edit-post', [
                 'post' => $post
             ]);
@@ -115,7 +115,7 @@ class PostController extends Controller
 
     public function destroy_post_image(Post $post)
     {
-        if (Auth::user()->id == $post->user->id) {
+        if (Auth::id() == $post->user->id) {
             Storage::deleteDirectory("public/photos/$post->id/post_image");
             $post->update([
                 'post_image' => null,
@@ -127,7 +127,7 @@ class PostController extends Controller
 
     public function destroy_gallery(Post $post)
     {
-        if (Auth::user()->id == $post->user->id) {
+        if (Auth::id() == $post->user->id) {
             Storage::deleteDirectory("public/photos/$post->id/post_gallery");
             return redirect("post/$post->slug");
         } else
@@ -136,7 +136,7 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        if (Auth::user()->id == $post->user->id) {
+        if (Auth::id() == $post->user->id) {
             $post->delete();
             Storage::disk('public')->deleteDirectory("photos/$post->id");
             return redirect('/');

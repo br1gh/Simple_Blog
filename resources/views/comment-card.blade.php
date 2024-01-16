@@ -6,7 +6,7 @@
             </h4>
             @auth
                 <div class="col-2 d-flex justify-content-end">
-                    @if(Auth::user()->id == $comment->user->id)
+                    @if(Auth::id() == $comment->user->id)
                         <a href="/post/{{$post->slug}}/comment/{{$comment->id}}/edit" style="margin-right: 10px">
                             <i class="bi bi-pencil-square text-info h1"></i>
                         </a>

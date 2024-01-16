@@ -24,17 +24,19 @@
 </head>
 <body class="body-bg">
 <div id="app">
-    @if(Auth::user() && Auth::user()->isBanned())
-        <nav
-            class="navbar navbar-expand-md navbar-light progress-bar-striped shadow-sm justify-content-center"
-            style="background-color: red">
+    @auth
+        @if(Auth::user()->isBanned())
+            <nav
+                class="navbar navbar-expand-md navbar-light progress-bar-striped shadow-sm justify-content-center"
+                style="background-color: red">
             <span class="text-white">
                 <b>
                     Your account is banned until {{Auth::user()->banned_until}}. You cannot interact with the community.
                 </b>
             </span>
-        </nav>
-    @endif
+            </nav>
+        @endif
+    @endauth
     <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #282a36">
         <div class="container">
             <a class="navbar-brand text-white" href="{{ url('/') }}">
@@ -77,12 +79,14 @@
                                     Profile
                                 </a>
 
-                                @if(Auth::user() && Auth::user()->isAdmin())
-                                    <a class="dropdown-item text-black bg-warning"
-                                       href="{{ route('admin.users.index') }}">
-                                        Admin
-                                    </a>
-                                @endif
+                                @auth
+                                    @if(Auth::user()->isAdmin())
+                                        <a class="dropdown-item text-black bg-warning"
+                                           href="{{ route('admin.users.index') }}">
+                                            Admin
+                                        </a>
+                                    @endif
+                                @endauth
 
                                 <a class="dropdown-item text-black bg-warning"
                                    href="{{ route('post', ['post' => \App\Models\Post::find(1)->slug]) }}">

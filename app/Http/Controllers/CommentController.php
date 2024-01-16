@@ -33,7 +33,7 @@ class CommentController extends Controller
         ]);
 
         Comment::create([
-            'user_id' => Auth::user()->id,
+            'user_id' => Auth::id(),
             'post_id' => $post->id,
             'score' => \request()->score,
             'body' => \request()->body
@@ -44,7 +44,7 @@ class CommentController extends Controller
 
     public function edit($slug, Comment $comment)
     {
-        if (Auth::user()->id == $comment->user->id) {
+        if (Auth::id() == $comment->user->id) {
             return view('edit-comment', [
                 'comment' => $comment,
                 'slug' => $slug
@@ -73,7 +73,7 @@ class CommentController extends Controller
     public function destroy($slug, $id)
     {
         $comment = Comment::find($id);
-        if (Auth::user()->id == $comment->user->id) {
+        if (Auth::id() == $comment->user->id) {
             $comment->delete();
             return redirect("/post/$slug");
         } else

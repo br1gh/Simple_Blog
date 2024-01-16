@@ -4,12 +4,16 @@
             <h4 class="col-10 text-black h1">
                 User Details
             </h4>
-            <div class="col-2 d-flex justify-content-end">
-                <button class="report-user border-0 p-0 h1" data-id="{{$user->id}}" data-bs-toggle="modal"
-                        data-bs-target="#report-user-modal" style="background-color: #282A36">
-                    <i class="bi bi-flag-fill bg-warning" style="color: #282A36"></i>
-                </button>
-            </div>
+            @auth
+                @if(Auth::id() != $user->id)
+                    <div class="col-2 d-flex justify-content-end">
+                        <button class="report-user border-0 p-0 h1" data-id="{{$user->id}}" data-bs-toggle="modal"
+                                data-bs-target="#report-user-modal" style="background-color: #282A36">
+                            <i class="bi bi-flag-fill bg-warning" style="color: #282A36"></i>
+                        </button>
+                    </div>
+                @endif
+            @endauth
         </div>
     </div>
 
@@ -69,7 +73,7 @@
         </div>
 
         @auth
-            @if(Auth::user()->id == $user->id)
+            @if(Auth::id() == $user->id)
                 <a href="/edit-details/">
                     <div class="row mt-3 mb-0">
                         <div class="col-md-8 offset-md-2">
