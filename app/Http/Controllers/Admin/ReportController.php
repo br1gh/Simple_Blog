@@ -121,25 +121,61 @@ class ReportController extends Controller
     {
         $report = Report::where('status', ReportStatus::ENFORCED)->findOrFail($id);
 
+        $userId = 0;
+
+        if ($report->object_type == 'user') {
+            $userId = $report->object_id;
+        } elseif ($report->object_type == 'post') {
+            $userId = Post::find($report->object_id)->user_id ?? 0;
+        } elseif ($report->object_type == 'comment') {
+            $userId = Comment::find($report->object_id)->user_id ?? 0;
+        }
+
+        $user = User::withTrashed()->find($userId);
+
         DB::beginTransaction();
         try {
             switch ($report->penalty) {
                 case PenaltyType::BAN:
-                    $user = User::find($report->object_id);
-                    $user->banned_until = null;
-                    $user->save();
+                    if ($user) {
+                        $user->banned_until = null;
+                        $user->save();
+                    }
                     break;
                 case PenaltyType::DELETE_USER:
-                    $user = User::find($report->object_id);
-                    $user->restore();
+                    if ($user) {
+                        $user->restore();
+                        $postIds = Post::onlyTrashed()
+                            ->where('deleted_at', '>=', $user->deleted_at)
+                            ->pluck('id')
+                            ->toArray();
+
+                        Comment::onlyTrashed()
+                            ->whereIn('post_id', $postIds)
+                            ->where('deleted_at', '>=', $user->deleted_at)
+                            ->restore();
+
+                        Post::onlyTrashed()
+                            ->whereIn('id', $postIds)
+                            ->restore();
+                    }
                     break;
                 case PenaltyType::DELETE_POST:
-                    $post = Post::find($report->object_id);
-                    $post->restore();
+                    $post = Post::onlyTrashed()->find($report->object_id);
+                    if ($post) {
+                        $post->restore();
+
+                        Comment::onlyTrashed()
+                            ->where('post_id', $post->id)
+                            ->where('deleted_at', '=', $post->deleted_at)
+                            ->restore();
+                    }
                     break;
                 case PenaltyType::DELETE_COMMENT:
-                    $comment = Comment::find($report->object_id);
-                    $comment->restore();
+                    $comment = Comment::onlyTrashed()->find($report->object_id);
+                    if ($comment) {
+                        $comment->restore();
+                    }
                     break;
             }
 
@@ -186,7 +222,7 @@ class ReportController extends Controller
     {
         $obj = Report::findOrFail($id);
         $obj->setRelation('object', $obj->object);
-        if ($obj->object_type === 'comment'){
+        if ($obj->object_type === 'comment') {
             $obj->setRelation('post', $obj->object->post);
             $obj->setRelation('user', $obj->object->user);
         }
