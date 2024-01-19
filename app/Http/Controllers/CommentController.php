@@ -2,22 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    public function show(Post $post)
+    public function show($slug)
     {
-        $comments = Comment::with('user')
-            ->whereDoesntHave('user', function ($query) {
+        $user = Auth::user();
+
+        if ($user && ($user->isAdmin())) {
+            $dbPost = Post::with([
+                'user' => function ($query) {
+                    $query->withTrashed();
+                }
+            ]);
+
+            $dbPost->withTrashed();
+
+            $dbComment = Comment::with([
+                'user' => function ($query) {
+                    $query->withTrashed();
+                }
+            ]);
+
+            $dbComment->withTrashed();
+        } else {
+            $dbPost = Post::with(['user']);
+            $dbPost->whereDoesntHave('user', function ($query) {
                 $query->where('banned_until', '>', now());
-            })
-            ->where('post_id', $post->id)
-            ->orderByDesc('created_at')
-            ->get();
+            });
+
+            $dbComment = Comment::with(['user']);
+            $dbComment->whereDoesntHave('user', function ($query) {
+                $query->where('banned_until', '>', now());
+            });
+        }
+
+        $post = $dbPost->where('slug', $slug)->firstOrFail();
+        $comments = $dbComment->orderByDesc('created_at')->get();
 
         return view('post', [
             'post' => $post,
