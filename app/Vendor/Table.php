@@ -70,20 +70,6 @@ class Table
             $db->where('status', ReportStatus::getStatusFromString($this->reportStatus));
         }
 
-//        if ($filter) {
-//            foreach ($filter['multiselect'] ?? [] as $field => $value) {
-//                if ($value) {
-//                    $db->whereIn($field, $value);
-//                }
-//            }
-//
-//            foreach ($filter['select'] ?? [] as $field => $value) {
-//                if ($value) {
-//                    $db->where($field, $value);
-//                }
-//            }
-//        }
-
         if ($search) {
             $db->where(function ($q) use ($search) {
                 foreach ($this->sqlSelect as $col) {

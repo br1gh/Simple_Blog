@@ -117,6 +117,57 @@ class ReportController extends Controller
         return true;
     }
 
+    public function ban()
+    {
+        $type = rtrim(request('type', ''), 's');
+        $id = request('id');
+        $description = request('description', '');
+        $date = request('date');
+
+        DB::beginTransaction();
+        try {
+            $userId = null;
+
+            switch ($id) {
+                case 'user':
+                    $userId = User::find($id)->id;
+                    break;
+                case 'post':
+                    $userId = Post::find($id)->user_id;
+                    break;
+                case 'comment':
+                    $userId = Comment::find($id)->user_id;
+                    break;
+            }
+
+            $user = User::withTrashed()->find($userId);
+            if ($user) {
+                $user->banned_until = $date;
+                $user->save();
+            }
+
+            $obj = new Report([
+                'object_type' => $type,
+                'object_id' => $id,
+                'user_id' => Auth::id() ?? 0,
+                'admin_id' => Auth::id() ?? 0,
+                'description' => $description,
+                'status' => ReportStatus::ENFORCED,
+                'penalty' => PenaltyType::BAN,
+            ]);
+
+            $obj->save();
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            toastr()->error('Something went wrong');
+            return false;
+        }
+
+        toastr('User banned successfully');
+        return true;
+    }
+
     public function pardon($id)
     {
         $report = Report::where('status', ReportStatus::ENFORCED)->findOrFail($id);

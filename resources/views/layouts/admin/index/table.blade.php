@@ -42,8 +42,8 @@
                     @if($actions)
                         <td>
                             @if(in_array('enforce', $actions) && $reportStatus !== 'enforced')
-                                <button type="button" class="btn btn-warning show-modal" data-toggle="modal"
-                                        data-target="#exampleModal"
+                                <button type="button" class="btn btn-warning show-enforce-modal" data-toggle="modal"
+                                        data-target="#enforceModal"
                                         data-id="{{$item->id}}"
                                         data-object-id="{{$item->object_id}}"
                                         data-object-type="{{$item->object_type}}"
@@ -73,9 +73,12 @@
                                 </a>
                             @endif
                             @if(in_array('ban', $actions))
-                                <a href="#" class="btn btn-warning">
+                                <button type="button" class="btn btn-warning show-ban-modal" data-toggle="modal"
+                                        data-target="#banModal"
+                                        data-id="{{$item->id}}"
+                                >
                                     <i class="mdi mdi-block-helper m-0"></i>
-                                </a>
+                                </button>
                             @endif
                             @if(in_array('restore', $actions) && Auth::user()->isSuperAdmin() && $item->deleted_at)
                                 <a href="{{route('admin.'.$tableName.'.restore', ['id' => $item->id])}}"
@@ -139,13 +142,45 @@
         </tbody>
     </table>
 </div>
+<div class="modal fade" id="banModal" tabindex="-1" role="dialog" aria-labelledby="banModalLabel"
+     aria-hidden="true" data-id="0">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="banModalLabel">Ban user</h5>
+                <button type="button" class="hide-ban-modal btn btn-outline-light" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="ban-form" method='POST'>
+                <div class="modal-body">
+                    <p id="report-reason">
+                        <input type="text" class="form-control" placeholder="Reason">
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group w-auto">
+                        <div id="ban-date" class="input-group date w-auto" data-provide="datepicker">
+                        </div>
+                        <div class="input-group-append">
+                            <button id="ban-user" type="button" class="btn btn-warning h-100 ban-button">
+                                <i class="mdi mdi-gavel btn-icon-append"></i> Ban User
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="enforceModal" tabindex="-1" role="dialog" aria-labelledby="enforceModalLabel"
      aria-hidden="true" data-id="0">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="enforceModalLabel">Enforce</h5>
-                <button type="button" class="hide-modal btn btn-outline-light" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="hide-enforce-modal btn btn-outline-light" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -161,7 +196,7 @@
                         <div id="enforce-date" class="input-group date w-auto" data-provide="datepicker">
                         </div>
                         <div class="input-group-append">
-                            <button id="ban-user" type="button" class="btn btn-warning h-100 enforce-button"
+                            <button id="enforce-ban-user" type="button" class="btn btn-warning h-100 enforce-button"
                                     data-penalty="1"
                                     data-status="1">
                                 <i class="mdi mdi-gavel btn-icon-append"></i> Ban User
@@ -193,11 +228,15 @@
 </div>
 <script>
     $("#enforce-date").datepicker().on('changeDate change keyup paste', function () {
+        $('#enforce-ban-user').prop('disabled', $(this).children().first().val() === '')
+    });
+
+    $("#ban-date").datepicker().on('changeDate change keyup paste', function () {
         $('#ban-user').prop('disabled', $(this).children().first().val() === '')
     });
 
-    $('.show-modal').on('click', function () {
-        $('#ban-user').prop('disabled', true)
+    $('.show-enforce-modal').on('click', function () {
+        $('#enforce-ban-user').prop('disabled', true)
         let url = $(this).data('url')
         let enforceDate = $('#enforce-date')
         enforceDate.datepicker('destroy');
@@ -276,7 +315,7 @@
         enforceModal.modal('show');
     });
 
-    $('.hide-modal').on('click', function () {
+    $('.hide-enforce-modal').on('click', function () {
         $('#enforceModal').modal('hide');
     });
 
@@ -299,5 +338,52 @@
             .fail(res => {
                 window.location.reload();
             })
+    });
+
+    $('.show-ban-modal').on('click', function () {
+        $('#ban-user').prop('disabled', true)
+        let banDate = $('#ban-date')
+        banDate.datepicker('destroy');
+        banDate.html('')
+        let banModal = $('#banModal')
+        banModal.attr('data-id', $(this).attr('data-id'))
+        banModal.modal('show');
+
+        banDate.html(
+            "<input type='text' class='form-control'>" +
+            "<div class='input-group-addon'>" +
+                "<span class='glyphicon glyphicon-th'></span>" +
+            "</div>"
+        )
+        banDate.datepicker({
+            format: "yyyy-mm-dd",
+            startDate: 'now',
+            todayBtn: "linked",
+        });
+        $('#ban-date input').attr("placeholder", "Ban until");
+    });
+
+    $('.hide-ban-modal').on('click', function () {
+        $('#banModal').modal('hide');
+        $('#report-reason input').first().val('')
+    });
+
+    $(document).on('click', '.ban-button', function (e) {
+        e.preventDefault();
+        let url = "{{route('admin.reports.ban')}}"
+        let banModal = $('#banModal')
+        $.post(url, {
+            _token: '{{ csrf_token() }}',
+            id: banModal.attr('data-id'),
+            description: $('#report-reason input').first().val(),
+            date: $('#ban-date input').first().val(),
+            type: '{{$tableName}}'
+        })
+            .done(res => {
+                window.location.reload();
+            })
+            // .fail(res => {
+            //     window.location.reload();
+            // })
     });
 </script>

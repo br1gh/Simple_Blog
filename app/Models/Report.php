@@ -19,6 +19,8 @@ class Report extends Model
 
     public function object(): BelongsTo
     {
-        return $this->belongsTo('App\Models\\' . ucfirst($this->object_type), 'object_id', 'id');
+        return $this
+            ->belongsTo('App\Models\\' . ucfirst($this->object_type), 'object_id', 'id')
+            ->withTrashed();
     }
 }

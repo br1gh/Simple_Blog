@@ -88,5 +88,6 @@ Route::middleware('auth.admin')
                 Route::get('/fetch/{id}', [Admin\ReportController::class, 'fetch'])->name('fetch');
                 Route::get('/pardon/{id}', [Admin\ReportController::class, 'pardon'])->name('pardon');
                 Route::post('/enforce', [Admin\ReportController::class, 'enforce'])->name('enforce');
+                Route::post('/ban', [Admin\ReportController::class, 'ban'])->name('ban');
             });
     });
