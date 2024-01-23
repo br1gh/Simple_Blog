@@ -165,7 +165,7 @@
             </div>
             <form id="ban-form" method='POST'>
                 <div class="modal-body">
-                    <p id="report-reason">
+                    <p id="report-ban-reason">
                         <input type="text" class="form-control" placeholder="Reason">
                     </p>
                 </div>
@@ -261,7 +261,7 @@
         enforceDate.html('')
         $.get(url)
             .done(res => {
-                $('#report-reason').html(res.description)
+                $('#report-reason').html('<b>Reason:</b><br>' + res.description)
                 if (res.object_type === 'comment') {
                     $('#report-body').html(
                         "<a href='/post/" + res.object.post.slug + "' class='btn btn-info me-2 mb-3' target='_blank'>" +
@@ -269,7 +269,7 @@
                         "</a>" +
                         "<a href='/user/" + res.object.user.username + "' class='btn btn-info mb-3' target='_blank'>" +
                             "<i class='mdi mdi-account btn-icon-prepend'></i> Show user profile" +
-                        "</a>" + res.object.body
+                        "</a><br><b>Comment: </b><br>" + res.object.body
                     )
                 }
                 if (res.object_type === 'post') {
@@ -345,9 +345,6 @@
             .done(res => {
                 window.location.reload();
             })
-            .fail(res => {
-                window.location.reload();
-            })
     });
 
     $('.show-ban-modal').on('click', function () {
@@ -392,8 +389,5 @@
             .done(res => {
                 window.location.reload();
             })
-            // .fail(res => {
-            //     window.location.reload();
-            // })
     });
 </script>

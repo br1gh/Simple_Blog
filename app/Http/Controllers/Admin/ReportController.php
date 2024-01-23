@@ -67,21 +67,17 @@ class ReportController extends Controller
 
                     switch ($objectType) {
                         case 'user':
-                            $user = User::find($objectId);
+                            $user = User::withTrashed()->find($objectId);
                             break;
                         case 'post':
-                            $user = Post::find($objectId)->user;
+                            $user = Post::withTrashed()->find($objectId)->user;
                             break;
                         case 'comment':
-                            $user = Comment::find($objectId)->user;
+                            $user = Comment::withTrashed()->find($objectId)->user;
                             break;
                     }
 
                     if ($penalty == PenaltyType::DELETE_USER) {
-                        $user->comments()->delete();
-                        $postIds = $user->posts->pluck('id')->toArray();
-                        Comment::whereIn('post_id', $postIds)->delete();
-                        $user->posts()->delete();
                         $user->delete();
                     } else {
                         $user->banned_until = $date;
@@ -90,13 +86,17 @@ class ReportController extends Controller
                 }
 
                 if ($penalty == PenaltyType::DELETE_POST && in_array($objectType, ['post', 'comment'])) {
-                    $post = $objectType == 'post' ? Post::find($objectId) : Comment::find($objectId)->post;
-                    $post->comments()->delete();
-                    $post->delete();
+                    $post = Post::find(
+                        $objectType == 'post' ? $objectId : (Comment::withTrashed()->find($objectId)->id ?? 0),
+                    );
+
+                    if ($post) {
+                        $post->delete();
+                    }
                 }
 
                 if ($penalty == PenaltyType::DELETE_COMMENT) {
-                    Comment::find($objectId)->delete();
+                    Comment::withTrashed()->find($objectId)->delete();
                 }
             }
 
@@ -196,30 +196,12 @@ class ReportController extends Controller
                 case PenaltyType::DELETE_USER:
                     if ($user) {
                         $user->restore();
-                        $postIds = Post::onlyTrashed()
-                            ->where('deleted_at', '>=', $user->deleted_at)
-                            ->pluck('id')
-                            ->toArray();
-
-                        Comment::onlyTrashed()
-                            ->whereIn('post_id', $postIds)
-                            ->where('deleted_at', '>=', $user->deleted_at)
-                            ->restore();
-
-                        Post::onlyTrashed()
-                            ->whereIn('id', $postIds)
-                            ->restore();
                     }
                     break;
                 case PenaltyType::DELETE_POST:
                     $post = Post::onlyTrashed()->find($report->object_id);
                     if ($post) {
                         $post->restore();
-
-                        Comment::onlyTrashed()
-                            ->where('post_id', $post->id)
-                            ->where('deleted_at', '=', $post->deleted_at)
-                            ->restore();
                     }
                     break;
                 case PenaltyType::DELETE_COMMENT:
