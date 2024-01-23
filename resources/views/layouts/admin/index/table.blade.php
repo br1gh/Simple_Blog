@@ -5,6 +5,9 @@
             @if($actions)
                 <th>Actions</th>
             @endif
+            @if($tableName === 'posts')
+                <th>Author</th>
+            @endif
             @foreach($headers as $header)
                 <th {{$loop->last ? 'class="text-center"' : '' }}>
                     {{$header}}
@@ -98,6 +101,13 @@
                                     <i class="mdi mdi-fire m-0"></i>
                                 </a>
                             @endif
+                        </td>
+                    @endif
+                    @if($tableName === 'posts')
+                        <td>
+                            <a href="/user/{{$item->username}}" class="text-info" target="_blank">
+                                {{$item->username}}
+                            </a>
                         </td>
                     @endif
                     @foreach($fields as $field)

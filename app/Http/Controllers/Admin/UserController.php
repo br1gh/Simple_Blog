@@ -22,7 +22,7 @@ class UserController extends Controller
                 'username',
                 'full_name',
                 'email',
-                'deleted_at',
+                'users.deleted_at',
             ],
             [
                 'username' => 'Username',

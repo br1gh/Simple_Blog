@@ -4,13 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
-use App\Models\User;
 use App\Vendor\Table;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -22,7 +19,8 @@ class PostController extends Controller
             [
                 'slug',
                 'title',
-                'deleted_at',
+                'users.username',
+                'posts.deleted_at',
             ],
             [
                 'slug' => 'Slug',

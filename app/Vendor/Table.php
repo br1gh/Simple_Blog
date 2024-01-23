@@ -53,17 +53,17 @@ class Table
         if ($this->tableName === 'reports') {
             $select = array_merge($select, ['reports.id', 'username']);
         } else {
-            $select[] = 'id';
+            $select[] = $this->tableName . '.id';
         }
 
         $db->select($select);
 
-        if ($this->tableName === 'reports') {
-            $db->leftJoin('users', 'users.id', '=', 'reports.user_id');
+        if (in_array($this->tableName, ['posts', 'reports'])) {
+            $db->leftJoin('users', 'users.id', '=', $this->tableName . '.user_id');
         }
 
-        if (in_array($this->tableName,  ['users', 'posts'])) {
-            $db->where('id', '<>', 1);
+        if (in_array($this->tableName, ['users', 'posts'])) {
+            $db->where($this->tableName . '.id', '<>', 1);
         }
 
         if ($this->tableName === 'reports') {
