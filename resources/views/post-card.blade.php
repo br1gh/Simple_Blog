@@ -1,23 +1,29 @@
-<div class="card text-white border-primary mt-4">
+@php
+    $postColor = ($post->deleted_at || $post->user->banned_until > now()) ? 'danger' : 'primary';
+@endphp
+
+<div class="card text-white border-{{$postColor}} mt-4">
     <div class="card-header mt-6">
         <div class="row pt-2">
             <h1 class="col-10">{{$post->title}}</h1>
             @auth
-                <div class="col-2 d-flex justify-content-end">
-                    @if(Auth::id() == $post->user->id)
-                        <a href="/post/{{$post->slug}}/edit" style="margin-right: 10px">
-                            <i class="bi bi-pencil-square text-info h1"></i>
-                        </a>
-                        <a href="/post/{{$post->slug}}/delete">
-                            <i class="bi bi-trash text-danger h1"></i>
-                        </a>
-                    @else
-                        <button class="report-post border-0 p-0" data-id="{{$post->id}}" data-bs-toggle="modal"
-                                data-bs-target="#report-post-modal" style="background-color: #282A36">
-                            <i class="bi bi-flag-fill text-warning h1"></i>
-                        </button>
-                    @endif
-                </div>
+                @if($postColor === 'primary')
+                    <div class="col-2 d-flex justify-content-end">
+                        @if(Auth::id() == $post->user->id)
+                            <a href="/post/{{$post->slug}}/edit" style="margin-right: 10px">
+                                <i class="bi bi-pencil-square text-info h1"></i>
+                            </a>
+                            <a href="/post/{{$post->slug}}/delete">
+                                <i class="bi bi-trash text-danger h1"></i>
+                            </a>
+                        @else
+                            <button class="report-post border-0 p-0" data-id="{{$post->id}}" data-bs-toggle="modal"
+                                    data-bs-target="#report-post-modal" style="background-color: #282A36">
+                                <i class="bi bi-flag-fill text-warning h1"></i>
+                            </button>
+                        @endif
+                    </div>
+                @endif
             @endauth
         </div>
     </div>
@@ -46,7 +52,7 @@
 
                 <div class="mb-3">
                     <h4>by <a href="/user/{{$post->user->username}}"
-                              class="text-primary">{{$post->user->full_name}}</a></h4>
+                              class="text-{{$postColor}}">{{$post->user->full_name}}</a></h4>
                 </div>
             </div>
         </div>

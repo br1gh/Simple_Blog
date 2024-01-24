@@ -10,9 +10,9 @@ class CommentController extends Controller
 {
     public function show($slug)
     {
-        $user = Auth::user();
+        $loggedUser = Auth::user();
 
-        if ($user && ($user->isAdmin())) {
+        if ($loggedUser && ($loggedUser->isAdmin())) {
             $dbPost = Post::with([
                 'user' => function ($query) {
                     $query->withTrashed();

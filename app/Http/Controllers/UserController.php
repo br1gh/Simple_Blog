@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Models\Comment;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -12,14 +12,52 @@ class UserController extends Controller
 {
     public function show($username)
     {
-        $user = User::where('username', $username)->first();
+        $loggedUser = Auth::user();
+        $dbUser = User::with([]);
 
-        if ($user) {
-            return view('user', [
-                'user' => $user
+        if ($loggedUser && ($loggedUser->isAdmin())) {
+            $dbUser->withTrashed();
+        } else {
+            $dbUser->where('banned_until', '<=', now());
+        }
+        $user = $dbUser->where('username', $username)->firstOrFail();
+
+        if ($loggedUser && ($loggedUser->isAdmin())) {
+            $dbComment = Comment::with([
+                'post' => function ($query) {
+                    $query->withTrashed();
+                },
+                'user' => function ($query) {
+                    $query->withTrashed();
+                }
             ]);
-        } else
-            abort(404);
+            $dbPost = Post::with([
+                'user' => function ($query) {
+                    $query->withTrashed();
+                },
+            ]);
+            $dbPost->withTrashed();
+            $dbComment->withTrashed();
+        } else {
+            $dbPost = Post::with(['user']);
+            $dbComment = Comment::with(['post', 'user']);
+        }
+
+        $posts = $dbPost
+            ->where('user_id', $user->id)
+            ->orderByDesc('created_at')
+            ->get();
+
+        $comments = $dbComment
+            ->where('user_id', $user->id)
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('user', [
+            'user' => $user,
+            'posts' => $posts,
+            'comments' => $comments,
+        ]);
     }
 
     public function edit_details()

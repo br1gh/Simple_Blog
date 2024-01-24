@@ -1,15 +1,19 @@
-<div class="card text-white border-warning mt-4 mb-2">
-    <div class="card-header bg-warning">
+@php
+    $userColor = ($user->deleted_at || $user->banned_until > now()) ? 'danger' : 'warning';
+@endphp
+
+<div class="card text-white border-{{$userColor}} mt-4 mb-2">
+    <div class="card-header bg-{{$userColor}}">
         <div class="row pt-2 mb-3">
             <h4 class="col-10 text-black h1">
                 User Details
             </h4>
             @auth
-                @if(Auth::id() != $user->id)
+                @if(Auth::id() != $user->id && $userColor === 'warning')
                     <div class="col-2 d-flex justify-content-end">
                         <button class="report-user border-0 p-0 h1" data-id="{{$user->id}}" data-bs-toggle="modal"
                                 data-bs-target="#report-user-modal" style="background-color: #282A36">
-                            <i class="bi bi-flag-fill bg-warning" style="color: #282A36"></i>
+                            <i class="bi bi-flag-fill bg-{{$userColor}}" style="color: #282A36"></i>
                         </button>
                     </div>
                 @endif

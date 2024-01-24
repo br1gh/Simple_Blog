@@ -2,26 +2,26 @@
 @section('content')
     @include('user-details')
 
-    @if($user->posts->count() > 0)
+    @if($posts->count() > 0)
         <a href="#posts">
             <button id="posts" class="col-6 offset-3 btn-primary text-white rounded mt-4 h1">
                 Posts
             </button>
         </a>
 
-        @foreach($user->posts->reverse() as $post)
+        @foreach($posts as $post)
             @include('post-card', ['content' => $post->excerpt, 'button' => 'Read more', 'button_action' => "/post/$post->slug"])
         @endforeach
     @endif
 
-    @if($user->comments->count() > 0)
+    @if($comments->count() > 0)
         <a href="#comments">
             <button id="comments" class="col-6 offset-3 btn-success text-white rounded mt-4 h1">
                 Comments
             </button>
         </a>
 
-        @foreach($user->comments->reverse() as $comment)
+        @foreach($comments as $comment)
             <div class="card text-white border-primary mt-4">
                 <div class="card-header">
                     <div class="row pt-2">
@@ -55,6 +55,7 @@
                     </a>
                 </div>
             </div>
+            @include('components.modal.report-file', ['type' => 'post'], ['id' => 'report-post-modal'])
         @endforeach
     @endif
 
