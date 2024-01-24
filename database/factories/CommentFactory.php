@@ -13,10 +13,10 @@ class CommentFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            'body' => '<p>' . implode('</p><p>', $this->faker->paragraphs(3)) . '</p>',
+            'body' => '<p>' . implode('</p><p>', $this->faker->paragraphs()) . '</p>',
             'score' => rand(1, 5),
             'user_id' => User::factory(),
             'post_id' => Post::factory()

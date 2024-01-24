@@ -135,6 +135,10 @@
 @if(in_array(request()->route()->uri, ["post/{post}/edit", "/"]))
     <script src="//cdn.ckeditor.com/4.21.0/full/ckeditor.js"></script>
     <script>
+        $(".form-check-input").change(function () {
+            $(this).val(this.checked ? 1 : 0)
+        });
+
         CKEDITOR.replace('body', {
             allowedContent: true
         });

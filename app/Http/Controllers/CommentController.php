@@ -41,6 +41,13 @@ class CommentController extends Controller
         }
 
         $post = $dbPost->where('slug', $slug)->firstOrFail();
+
+        if ($post->is_published == 0) {
+            if (!$loggedUser || ((!$loggedUser->isAdmin() && $loggedUser->id != $post->user_id))) {
+                abort(404);
+            }
+        }
+
         $comments = $dbComment->orderByDesc('created_at')->get();
 
         return view('post', [

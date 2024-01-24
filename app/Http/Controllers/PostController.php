@@ -19,6 +19,7 @@ class PostController extends Controller
                     ->whereDoesntHave('user', function ($query) {
                         $query->where('banned_until', '>', now());
                     })
+                    ->where('is_published', 1)
                     ->latest()
                     ->paginate(10)
         ]);
@@ -41,6 +42,7 @@ class PostController extends Controller
             'slug' => \request()->slug,
             'excerpt' => \request()->excerpt,
             'body' => \request()->body,
+            'is_published' => \request()->is_published,
         ];
 
         if (\request()->post_image) {
@@ -90,6 +92,7 @@ class PostController extends Controller
             'title' => \request()->title,
             'excerpt' => \request()->excerpt,
             'body' => \request()->body,
+            'is_published' => \request()->is_published,
         ];
 
         if (\request()->file('post_image')) {

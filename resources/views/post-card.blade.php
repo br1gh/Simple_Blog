@@ -1,5 +1,6 @@
 @php
-    $postColor = ($post->deleted_at || $post->user->banned_until > now()) ? 'danger' : 'primary';
+    $postColor = ($post->deleted_at || $post->user->banned_until > now())
+        ? 'danger' : ($post->is_published ? 'primary' : 'secondary');
 @endphp
 
 <div class="card text-white border-{{$postColor}} mt-4">
@@ -7,7 +8,7 @@
         <div class="row pt-2">
             <h1 class="col-10">{{$post->title}}</h1>
             @auth
-                @if($postColor === 'primary')
+                @if($postColor !== 'danger')
                     <div class="col-2 d-flex justify-content-end">
                         @if(Auth::id() == $post->user->id)
                             <a href="/post/{{$post->slug}}/edit" style="margin-right: 10px">
@@ -63,7 +64,7 @@
 
         <a href="{{$button_action}}">
             <div class="row m-0 pt-3">
-                <button class="btn btn-primary btn-lg btn-block">
+                <button class="btn btn-{{$postColor}} btn-lg btn-block">
                     {{$button}}
                 </button>
             </div>

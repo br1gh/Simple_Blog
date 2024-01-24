@@ -84,10 +84,23 @@
                     </div>
                 </div>
 
+                <div class="row mb-3">
+                    <label for="post_image" class="col-md-2 col-form-label text-md-end">Published</label>
+
+                    <div class="col-md-8">
+                        <div class="form-check form-switch">
+                            <input type="hidden" name="is_published" value="0">
+                            <input id="is_published" name="is_published" class="form-check-input" type="checkbox"
+                                   value="{{$post->is_published ? 1 : 0}}"
+                                   style="width: 50px; height: 25px" {{$post->is_published ? 'checked' : ''}}>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row mb-0">
                     <div class="col-md-8 offset-md-2">
                         <button type="submit" class="btn btn-info text-white w-100">
-                            Edit Post
+                            Save Changes
                         </button>
                     </div>
                 </div>

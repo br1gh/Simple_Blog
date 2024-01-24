@@ -45,6 +45,9 @@ class UserController extends Controller
 
         $posts = $dbPost
             ->where('user_id', $user->id)
+            ->when(!$loggedUser || (!$loggedUser->isAdmin() && $loggedUser->id != $user->id), function ($query) {
+                $query->where('is_published', 1);
+            })
             ->orderByDesc('created_at')
             ->get();
 
@@ -55,7 +58,8 @@ class UserController extends Controller
 
         return view('user', [
             'user' => $user,
-            'posts' => $posts,
+            'publishedPosts' => $posts->where('is_published', 1),
+            'notPublishedPosts' => $posts->where('is_published', 0),
             'comments' => $comments,
         ]);
     }

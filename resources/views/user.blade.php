@@ -2,17 +2,30 @@
 @section('content')
     @include('user-details')
 
-    @if($posts->count() > 0)
-        <a href="#posts">
-            <button id="posts" class="col-6 offset-3 btn-primary text-white rounded mt-4 h1">
+    @if($publishedPosts->count() > 0)
+        <a href="#publishedPosts">
+            <button id="publishedPosts" class="col-6 offset-3 btn-primary text-white rounded mt-4 h1">
                 Posts
             </button>
         </a>
 
-        @foreach($posts as $post)
+        @foreach($publishedPosts as $post)
             @include('post-card', ['content' => $post->excerpt, 'button' => 'Read more', 'button_action' => "/post/$post->slug"])
         @endforeach
     @endif
+
+    @if($notPublishedPosts->count() > 0 && (Auth::user() && (Auth::id() == $user->id || (Auth::user()->isAdmin()))))
+        <a href="#notPublishedPosts">
+            <button id="notPublishedPosts" class="col-6 offset-3 btn-secondary text-white rounded mt-4 h1">
+                Not published posts
+            </button>
+        </a>
+
+        @foreach($notPublishedPosts as $post)
+            @include('post-card', ['content' => $post->excerpt, 'button' => 'Read more', 'button_action' => "/post/$post->slug"])
+        @endforeach
+    @endif
+
 
     @if($comments->count() > 0)
         <a href="#comments">
@@ -22,7 +35,11 @@
         </a>
 
         @foreach($comments as $comment)
-            <div class="card text-white border-primary mt-4">
+            @php
+                $postColor = ($comment->post->deleted_at || $comment->post->user->banned_until > now())
+                    ? 'danger' : ($comment->post->is_published ? 'primary' : 'secondary');
+            @endphp
+            <div class="card text-white border-{{$postColor}} mt-4">
                 <div class="card-header">
                     <div class="row pt-2">
                         <h1 class="col-10">{{$comment->post->title}}</h1>
@@ -39,7 +56,7 @@
 
                     <div class="mb-3">
                         <h4>by <a href="/user/{{$comment->post->user->username}}"
-                                  class="text-primary">{{$comment->post->user->full_name}}</a></h4>
+                                  class="text-{{$postColor}}">{{$comment->post->user->full_name}}</a></h4>
                     </div>
                 </div>
                 <div class="card-body mx-3">
@@ -48,7 +65,7 @@
                     </div>
                     <a href=/post/{{$comment->post->slug}}/>
                         <div class="row mt-5">
-                            <button class="btn btn-primary btn-lg btn-block">
+                            <button class="btn btn-{{$postColor}} btn-lg btn-block">
                                 Show this post
                             </button>
                         </div>
