@@ -9,7 +9,7 @@
                 User Details
             </h4>
             @auth
-                @if(Auth::id() != $user->id && $userColor === 'warning')
+                @if(Auth::id() != $user->id && $userColor === 'warning' && !Auth::user()->isSuperAdmin())
                     <div class="col-2 d-flex justify-content-end">
                         <button class="report-user border-0 p-0 h1" data-id="{{$user->id}}" data-bs-toggle="modal"
                                 data-bs-target="#report-user-modal" style="background-color: #282A36">

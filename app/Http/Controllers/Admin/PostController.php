@@ -46,9 +46,15 @@ class PostController extends Controller
 
     public function delete($id)
     {
+        if ($id == 1) {
+            toastr()->error('You can not delete rules');
+            return redirect()->route('admin.posts.index');
+        }
+
+        $obj = Post::findOrFail($id);
+
         DB::beginTransaction();
         try {
-            $obj = Post::findOrFail($id);
             $obj->delete();
             DB::commit();
         } catch (Exception $exception) {
@@ -68,9 +74,10 @@ class PostController extends Controller
             return redirect()->route('admin.posts.index');
         }
 
+        $obj = Post::withTrashed()->findOrFail($id);
+
         DB::beginTransaction();
         try {
-            $obj = Post::withTrashed()->findOrFail($id);
             $obj->forceDelete();
             DB::commit();
         } catch (Exception $exception) {
@@ -90,9 +97,10 @@ class PostController extends Controller
             return redirect()->route('admin.posts.index');
         }
 
+        $obj = Post::withTrashed()->findOrFail($id);
+
         DB::beginTransaction();
         try {
-            $obj = Post::withTrashed()->findOrFail($id);
             $obj->restore();
             DB::commit();
         } catch (Exception $exception) {

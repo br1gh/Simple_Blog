@@ -43,7 +43,7 @@
                 <div class="card-header">
                     <div class="row pt-2">
                         <h1 class="col-10">{{$comment->post->title}}</h1>
-                        @if(Auth::id() != $comment->post->user_id)
+                        @if(Auth::id() != $comment->post->user_id && $comment->post->id != 1 && $post->is_published)
                             <div class="col-2 d-flex justify-content-end">
                                 <button class="report-post border-0 p-0" data-id="{{$comment->post->id}}"
                                         data-bs-toggle="modal"

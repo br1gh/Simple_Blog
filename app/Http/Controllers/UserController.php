@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserController extends Controller
 {
@@ -18,21 +19,24 @@ class UserController extends Controller
         if ($loggedUser && ($loggedUser->isAdmin())) {
             $dbUser->withTrashed();
         } else {
-            $dbUser->where('banned_until', '<=', now());
+            $dbUser->where(function (Builder $q) {
+                $q->where('banned_until', '<=', now());
+                $q->orWhereNull('banned_until');
+            });
         }
         $user = $dbUser->where('username', $username)->firstOrFail();
 
         if ($loggedUser && ($loggedUser->isAdmin())) {
             $dbComment = Comment::with([
-                'post' => function ($query) {
+                'post' => function (Builder $query) {
                     $query->withTrashed();
                 },
-                'user' => function ($query) {
+                'user' => function (Builder $query) {
                     $query->withTrashed();
                 }
             ]);
             $dbPost = Post::with([
-                'user' => function ($query) {
+                'user' => function (Builder $query) {
                     $query->withTrashed();
                 },
             ]);
@@ -40,14 +44,20 @@ class UserController extends Controller
             $dbComment->withTrashed();
         } else {
             $dbPost = Post::with(['user']);
-            $dbComment = Comment::with(['post', 'user']);
+            $dbComment = Comment::with(['post', 'user'])
+                ->whereHas('post', function (Builder $query) {
+                    $query->where('is_published', 1);
+                });
         }
 
         $posts = $dbPost
             ->where('user_id', $user->id)
-            ->when(!$loggedUser || (!$loggedUser->isAdmin() && $loggedUser->id != $user->id), function ($query) {
-                $query->where('is_published', 1);
-            })
+            ->when(
+                !$loggedUser || (!$loggedUser->isAdmin() && $loggedUser->id != $user->id),
+                function (Builder $query) {
+                    $query->where('is_published', 1);
+                }
+            )
             ->orderByDesc('created_at')
             ->get();
 

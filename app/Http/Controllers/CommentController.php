@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 
 class CommentController extends Controller
 {
@@ -14,7 +15,7 @@ class CommentController extends Controller
 
         if ($loggedUser && ($loggedUser->isAdmin())) {
             $dbPost = Post::with([
-                'user' => function ($query) {
+                'user' => function (Builder $query) {
                     $query->withTrashed();
                 }
             ]);
@@ -22,7 +23,7 @@ class CommentController extends Controller
             $dbPost->withTrashed();
 
             $dbComment = Comment::with([
-                'user' => function ($query) {
+                'user' => function (Builder $query) {
                     $query->withTrashed();
                 }
             ]);
@@ -30,12 +31,12 @@ class CommentController extends Controller
             $dbComment->withTrashed();
         } else {
             $dbPost = Post::with(['user']);
-            $dbPost->whereDoesntHave('user', function ($query) {
+            $dbPost->whereDoesntHave('user', function (Builder $query) {
                 $query->where('banned_until', '>', now());
             });
 
             $dbComment = Comment::with(['user']);
-            $dbComment->whereDoesntHave('user', function ($query) {
+            $dbComment->whereDoesntHave('user', function (Builder $query) {
                 $query->where('banned_until', '>', now());
             });
         }

@@ -14,10 +14,12 @@
                             <a href="/post/{{$post->slug}}/edit" style="margin-right: 10px">
                                 <i class="bi bi-pencil-square text-info h1"></i>
                             </a>
-                            <a href="/post/{{$post->slug}}/delete">
-                                <i class="bi bi-trash text-danger h1"></i>
-                            </a>
-                        @else
+                            @if($post->id != 1)
+                                <a href="/post/{{$post->slug}}/delete">
+                                    <i class="bi bi-trash text-danger h1"></i>
+                                </a>
+                            @endif
+                        @elseif($post->id != 1 && $post->is_published)
                             <button class="report-post border-0 p-0" data-id="{{$post->id}}" data-bs-toggle="modal"
                                     data-bs-target="#report-post-modal" style="background-color: #282A36">
                                 <i class="bi bi-flag-fill text-warning h1"></i>

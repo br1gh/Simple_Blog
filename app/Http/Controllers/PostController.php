@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
-use Illuminate\Http\File;
-use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
 
 class PostController extends Controller
 {
@@ -16,10 +14,11 @@ class PostController extends Controller
         return view('welcome', [
             'posts' =>
                 Post::with('user')
-                    ->whereDoesntHave('user', function ($query) {
+                    ->whereDoesntHave('user', function (Builder $query) {
                         $query->where('banned_until', '>', now());
                     })
                     ->where('is_published', 1)
+                    ->where('id', '!=', 1)
                     ->latest()
                     ->paginate(10)
         ]);
@@ -139,7 +138,7 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        if (Auth::id() == $post->user->id) {
+        if (Auth::id() == $post->user->id && $post->id != 1) {
             $post->delete();
             Storage::disk('public')->deleteDirectory("photos/$post->id");
             return redirect('/');
