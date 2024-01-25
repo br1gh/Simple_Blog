@@ -210,6 +210,11 @@
 <script src="{{asset('admin/js/admin.js')}}"></script>
 
 @stack('js')
+<script>
+    $(".form-check-input").change(function () {
+        $(this).val(this.checked ? 1 : 0)
+    });
+</script>
 @stack('js.end')
 </body>
 </html>

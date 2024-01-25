@@ -42,6 +42,7 @@
                         <x-input.checkbox
                             :label="'Admin'"
                             :name="'is_admin'"
+                            :value="$obj->is_admin"
                         />
                     @endif
 

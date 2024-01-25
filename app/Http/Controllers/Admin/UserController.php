@@ -59,6 +59,10 @@ class UserController extends Controller
         if (request()->isMethod('post')) {
             $post = request()->get('form', []);
 
+            if (!Auth::user()->isSuperAdmin()){
+                unset($post['is_admin']);
+            }
+
             Validator::make($post, [
                 'username' => 'required|string|max:255|unique:users,username,' . $obj->id . ',id',
                 'full_name' => 'required|string|max:255',
