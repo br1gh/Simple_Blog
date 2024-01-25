@@ -74,7 +74,8 @@ Route::middleware('auth.admin')
         Route::name('posts.')
             ->prefix('posts')
             ->group(function () {
-                Route::get('/', [Admin\PostController::class, 'index'])->name('index');
+                Route::get('/published', [Admin\PostController::class, 'index'])->name('published.index');
+                Route::get('/not-published', [Admin\PostController::class, 'index'])->name('not-published.index');
                 Route::get('/delete/{id}', [Admin\PostController::class, 'delete'])->name('delete');
                 Route::get('/force-delete/{id}', [Admin\PostController::class, 'forceDelete'])->name('force-delete');
                 Route::get('/restore/{id}', [Admin\PostController::class, 'restore'])->name('restore');

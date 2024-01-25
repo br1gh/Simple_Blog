@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Builder;
@@ -28,15 +29,15 @@ class UserController extends Controller
 
         if ($loggedUser && ($loggedUser->isAdmin())) {
             $dbComment = Comment::with([
-                'post' => function (Builder $query) {
+                'post' => function (BelongsTo $query) {
                     $query->withTrashed();
                 },
-                'user' => function (Builder $query) {
+                'user' => function (BelongsTo $query) {
                     $query->withTrashed();
                 }
             ]);
             $dbPost = Post::with([
-                'user' => function (Builder $query) {
+                'user' => function (BelongsTo $query) {
                     $query->withTrashed();
                 },
             ]);

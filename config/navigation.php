@@ -20,8 +20,12 @@ return [
         'icon' => 'mdi mdi mdi-newspaper',
         'items' => [
             [
-                'label' => 'List',
-                'route' => 'admin.posts.index',
+                'label' => 'Published',
+                'route' => 'admin.posts.published.index',
+            ],
+            [
+                'label' => 'Not Published',
+                'route' => 'admin.posts.not-published.index',
             ],
         ],
     ],

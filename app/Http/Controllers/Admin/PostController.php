@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
+    private $type;
+
+    public function __construct()
+    {
+        $this->type = request()->segment(3);
+    }
+
     public function index()
     {
         $table = new Table(
@@ -32,7 +39,10 @@ class PostController extends Controller
                 'restore',
                 'delete',
                 'forceDelete',
-            ]
+            ],
+            [],
+            null,
+            $this->type === 'published'
         );
 
         if (request()->ajax()) {
@@ -48,7 +58,7 @@ class PostController extends Controller
     {
         if ($id == 1) {
             toastr()->error('You can not delete rules');
-            return redirect()->route('admin.posts.index');
+            return redirect()->back();
         }
 
         $obj = Post::findOrFail($id);
@@ -61,17 +71,17 @@ class PostController extends Controller
             DB::rollBack();
 
             toastr()->error('Something went wrong');
-            return redirect()->route('admin.posts.index');
+            return redirect()->back();
         }
 
         toastr('Post deleted successfully');
-        return redirect()->route('admin.posts.index');
+        return redirect()->back();
     }
 
     public function forceDelete($id)
     {
         if (!Auth::user()->isSuperAdmin()) {
-            return redirect()->route('admin.posts.index');
+            return redirect()->back();
         }
 
         $obj = Post::withTrashed()->findOrFail($id);
@@ -84,17 +94,17 @@ class PostController extends Controller
             DB::rollBack();
 
             toastr()->error('Something went wrong');
-            return redirect()->route('admin.posts.index');
+            return redirect()->back();
         }
 
         toastr('Post deleted permanently');
-        return redirect()->route('admin.posts.index');
+        return redirect()->back();
     }
 
     public function restore($id)
     {
         if (!Auth::user()->isSuperAdmin()) {
-            return redirect()->route('admin.posts.index');
+            return redirect()->back();
         }
 
         $obj = Post::withTrashed()->findOrFail($id);
@@ -107,10 +117,10 @@ class PostController extends Controller
             DB::rollBack();
 
             toastr()->error('Something went wrong');
-            return redirect()->route('admin.posts.index');
+            return redirect()->back();
         }
 
         toastr('Post restored successfully');
-        return redirect()->route('admin.posts.index');
+        return redirect()->back();
     }
 }

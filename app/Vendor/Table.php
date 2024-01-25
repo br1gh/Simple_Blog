@@ -15,6 +15,7 @@ class Table
     public $orderableColumns;
     private $actions;
     public $reportStatus;
+    private $isPublished;
 
     public function __construct(
         string $tableName,
@@ -23,7 +24,8 @@ class Table
         array  $columns,
         array  $actions = [],
         array  $orderableColumns = [],
-        ?string $reportStatus = null
+        ?string $reportStatus = null,
+        bool $isPublished = false
     )
     {
         $this->tableName = $tableName;
@@ -34,6 +36,7 @@ class Table
         $this->orderableColumns = $orderableColumns ?: $this->columns;
         $this->actions = $actions;
         $this->reportStatus = $reportStatus;
+        $this->isPublished = $isPublished;
     }
 
     public function render(): array
@@ -64,6 +67,10 @@ class Table
 
         if (in_array($this->tableName, ['users', 'posts'])) {
             $db->where($this->tableName . '.id', '<>', 1);
+        }
+
+        if ($this->tableName === 'posts') {
+            $db->where('is_published', (int)$this->isPublished);
         }
 
         if ($this->tableName === 'reports') {

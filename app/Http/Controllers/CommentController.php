@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CommentController extends Controller
 {
@@ -15,7 +16,7 @@ class CommentController extends Controller
 
         if ($loggedUser && ($loggedUser->isAdmin())) {
             $dbPost = Post::with([
-                'user' => function (Builder $query) {
+                'user' => function (BelongsTo $query) {
                     $query->withTrashed();
                 }
             ]);
@@ -23,7 +24,7 @@ class CommentController extends Controller
             $dbPost->withTrashed();
 
             $dbComment = Comment::with([
-                'user' => function (Builder $query) {
+                'user' => function (BelongsTo $query) {
                     $query->withTrashed();
                 }
             ]);
