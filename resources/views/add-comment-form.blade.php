@@ -25,9 +25,9 @@
                 <label for="score" class="col-md-2 col-form-label text-md-end">Score</label>
 
                 <div class="col-md-8">
-                    <input id="score" type="number" min="1" max="5" value="{{ old('score') }}"
+                    <input id="score" type="number" min="0" max="5" value="{{ old('score') }}"
                            class="form-control text-white @error('score') is-invalid @enderror"
-                           name="score" required>
+                           name="score">
 
                     @error('score')
                     <span class="invalid-feedback" role="alert">

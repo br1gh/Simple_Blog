@@ -3,7 +3,7 @@
 @section('content')
     @include('post-card', ['content' => $post->body, 'button' => '← Go Back', 'button_action' => "/"])
     @auth
-        @if(Auth::user()->hasVerifiedEmail() && !Auth::user()->isBanned())
+        @if(Auth::user()->hasVerifiedEmail() && !Auth::user()->isBanned() && !$userHasComment)
             @include('add-comment-form')
         @endauth
     @endauth

@@ -51,24 +51,43 @@ class CommentController extends Controller
         }
 
         $comments = $dbComment->orderByDesc('created_at')->get();
+        $userHasComment = false;
+
+        if ($loggedUser) {
+            $userHasComment = Comment::with([])
+                ->where('user_id', $loggedUser->id)
+                ->where('post_id', $post->id)
+                ->exists();
+        }
 
         return view('post', [
             'post' => $post,
             'comments' => $comments,
+            'userHasComment' => $userHasComment,
         ]);
     }
 
     public function store(Post $post)
     {
         \request()->validate([
-            'score' => ['required', 'integer', 'min:1', 'max:5'],
+            'score' => ['nullable', 'integer', 'min:1', 'max:5'],
             'body' => ['required', 'string'],
         ]);
 
+        $userId = Auth::id();
+
+        if (Comment::with([])
+                ->where('user_id', $userId)
+                ->where('post_id', $post->id)
+                ->exists()
+        ) {
+            return redirect("/post/{$post->slug}");
+        }
+
         Comment::create([
-            'user_id' => Auth::id(),
+            'user_id' => $userId,
             'post_id' => $post->id,
-            'score' => \request()->score,
+            'score' => \request()->score ?? 0,
             'body' => \request()->body
         ]);
 

@@ -34,9 +34,13 @@
             <h5>{{$comment->created_at->diffForHumans()}}</h5>
         </div>
 
-        <div class="row mb-3">
-            <h2 class="text-{{$postColor}}">{{str_repeat('★',$comment->score)}}{{str_repeat('☆',5-$comment->score)}}</h2>
-        </div>
+        @if($comment->score)
+            <div class="row mb-3">
+                <h2 class="text-{{$postColor}}">
+                    {{str_repeat('★', $comment->score)}}{{str_repeat('☆', 5 - $comment->score)}}
+                </h2>
+            </div>
+        @endif
 
         <div class="row mb-3">
             <p>{!!$comment->body!!}</p>
