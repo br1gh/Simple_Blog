@@ -61,7 +61,7 @@ class Table
 
         $db->select($select);
 
-        if (in_array($this->tableName, ['posts', 'reports'])) {
+        if (in_array($this->tableName, ['posts', 'comments', 'reports'])) {
             $db->leftJoin('users', 'users.id', '=', $this->tableName . '.user_id');
         }
 
@@ -71,6 +71,10 @@ class Table
 
         if ($this->tableName === 'posts') {
             $db->where('is_published', (int)$this->isPublished);
+        }
+
+        if ($this->tableName === 'comments') {
+            $db->leftJoin('posts', 'posts.id', '=', 'comments.post_id');
         }
 
         if ($this->tableName === 'reports') {

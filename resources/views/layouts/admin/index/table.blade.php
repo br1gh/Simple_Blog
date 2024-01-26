@@ -5,7 +5,10 @@
             @if($actions)
                 <th>Actions</th>
             @endif
-            @if($tableName === 'posts')
+            @if($tableName === 'comments')
+                <th>Post</th>
+            @endif
+            @if(in_array($tableName, ['posts', 'comments']))
                 <th>Author</th>
             @endif
             @foreach($headers as $header)
@@ -103,7 +106,14 @@
                             @endif
                         </td>
                     @endif
-                    @if($tableName === 'posts')
+                    @if($tableName === 'comments')
+                        <td>
+                            <a href="/post/{{$item->slug}}" class="text-info" target="_blank">
+                                {{$item->title}}
+                            </a>
+                        </td>
+                    @endif
+                    @if(in_array($tableName, ['posts', 'comments']))
                         <td>
                             <a href="/user/{{$item->username}}" class="text-info" target="_blank">
                                 {{$item->username}}
@@ -112,7 +122,18 @@
                     @endif
                     @foreach($fields as $field)
                         <td {{$loop->last ? 'class="text-center"' : '' }}>
-                            {{ $item->{$field} }}
+                            @if($field === 'score')
+                                @if($item->score)
+                                    <b>
+                                        {{str_repeat('★', $item->score)}}{{str_repeat('☆', 5 - $item->score)}}
+                                    </b>
+                                    {{" ($item->score)"}}
+                                @else
+                                    -
+                                @endif
+                            @else
+                                {{ $item->{$field} }}
+                            @endif
                         </td>
                     @endforeach
                     @if($tableName === 'reports')

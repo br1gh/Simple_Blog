@@ -1,48 +1,6 @@
 @extends('layouts.admin.app')
 
 @section('content')
-{{--    @if(isset($filters))--}}
-{{--        <div class="card position-fixed">--}}
-{{--            <div class="card-header">--}}
-{{--                <h4 class="card-title">--}}
-{{--                    Filters--}}
-{{--                </h4>--}}
-{{--            </div>--}}
-{{--            <div class="card-body filters">--}}
-{{--                <div class="row">--}}
-{{--                    @foreach($filters as $type => $typeFilters)--}}
-{{--                        @foreach($typeFilters as $name => $options)--}}
-{{--                            <div class="col-md-4">--}}
-{{--                                <div class="form-group">--}}
-{{--                                    <label for="filter_{{$name}}">{{$name}}</label>--}}
-{{--                                    @if($type == 'multiselect')--}}
-{{--                                        <a href="#" class="pull-right clear-multiselect" style="color: inherit">--}}
-{{--                                            Clear--}}
-{{--                                        </a>--}}
-{{--                                        <select--}}
-{{--                                            id="filter_{{$name}}"--}}
-{{--                                            class="form-control multiselect"--}}
-{{--                                            data-type="{{$type}}"--}}
-{{--                                            title="All"--}}
-{{--                                            multiple--}}
-{{--                                        >--}}
-{{--                                            @else--}}
-{{--                                                <select id="filter_{{$name}}" class="form-control selectpicker"--}}
-{{--                                                        data-type="{{$type}}">--}}
-{{--                                                    <option value="" selected>All</option>--}}
-{{--                                                    @endif--}}
-{{--                                                    @foreach($options as $key => $value)--}}
-{{--                                                        <option value="{{$key}}">{{$value}}</option>--}}
-{{--                                                    @endforeach--}}
-{{--                                                </select>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        @endforeach--}}
-{{--                    @endforeach--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    @endif--}}
     <div class="card">
         <div class="card-body">
             <div class="row">

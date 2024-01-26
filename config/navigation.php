@@ -30,6 +30,16 @@ return [
         ],
     ],
     [
+        'label' => 'Comments',
+        'icon' => 'mdi mdi mdi-comment',
+        'items' => [
+            [
+                'label' => 'List',
+                'route' => 'admin.comments.index',
+            ],
+        ],
+    ],
+    [
         'label' => 'Reports',
         'icon' => 'mdi mdi-flag',
         'items' => [

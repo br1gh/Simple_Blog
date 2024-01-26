@@ -81,6 +81,15 @@ Route::middleware('auth.admin')
                 Route::get('/restore/{id}', [Admin\PostController::class, 'restore'])->name('restore');
             });
 
+        Route::name('comments.')
+            ->prefix('comments')
+            ->group(function () {
+                Route::get('/', [Admin\CommentController::class, 'index'])->name('index');
+                Route::get('/delete/{id}', [Admin\CommentController::class, 'delete'])->name('delete');
+                Route::get('/force-delete/{id}', [Admin\CommentController::class, 'forceDelete'])->name('force-delete');
+                Route::get('/restore/{id}', [Admin\CommentController::class, 'restore'])->name('restore');
+            });
+
         Route::name('reports.')
             ->prefix('reports')
             ->group(function () {

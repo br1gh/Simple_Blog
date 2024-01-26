@@ -18,7 +18,7 @@ class CreateCommentsTable extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('post_id')->constrained()->cascadeOnDelete();
             $table->text('body');
-            $table->tinyInteger('score');
+            $table->tinyInteger('score')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
