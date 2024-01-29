@@ -393,7 +393,7 @@
 
     $('.hide-ban-modal').on('click', function () {
         $('#banModal').modal('hide');
-        $('#report-reason input').first().val('')
+        $('#report-ban-reason input').first().val('')
     });
 
     $(document).on('click', '.ban-button', function (e) {
@@ -403,7 +403,7 @@
         $.post(url, {
             _token: '{{ csrf_token() }}',
             id: banModal.attr('data-id'),
-            description: $('#report-reason input').first().val(),
+            description: $('#report-ban-reason input').first().val(),
             date: $('#ban-date input').first().val(),
             type: '{{$tableName}}'
         })
