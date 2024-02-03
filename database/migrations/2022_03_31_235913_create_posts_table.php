@@ -53,6 +53,7 @@ class CreatePostsTable extends Migration
                 'title' => 'rules',
                 'excerpt' => 'rules',
                 'body' => 'rules',
+                'is_published' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
