@@ -56,6 +56,10 @@ class UserController extends Controller
 
         $obj = $id > 0 ? User::findOrFail($id) : new User();
 
+        if ($obj->isAdmin() && (!Auth::user()->isSuperAdmin() || $obj->id != Auth::id())) {
+            return redirect()->route('admin.users.edit');
+        }
+
         if (request()->isMethod('post')) {
             $post = request()->get('form', []);
 
